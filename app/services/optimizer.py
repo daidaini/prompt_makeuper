@@ -84,7 +84,7 @@ class PromptOptimizer:
             input_prompt=prompt
         )
         messages = [
-            {"role": "system", "content": skill["system_prompt"]},
+            {"role": "system", "content": skill["system_prompt"] + "\n\nIMPORTANT: Output the optimized prompt in Simplified Chinese (简体中文) only."},
             {"role": "user", "content": optimization_prompt}
         ]
         return await self.llm.chat(messages, stage="skill_application", skill_name=skill["name"])

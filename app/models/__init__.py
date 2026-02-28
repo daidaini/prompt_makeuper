@@ -1,1 +1,1 @@
-"""Data models for the Prompt Makeover Service."""
+"""Data models for the prompt makeuper Service."""

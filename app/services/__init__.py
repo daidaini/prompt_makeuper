@@ -1,1 +1,1 @@
-"""Service layer for the Prompt Makeover Service."""
+"""Service layer for the prompt makeuper Service."""

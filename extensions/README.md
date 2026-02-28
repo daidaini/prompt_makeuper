@@ -1,6 +1,6 @@
-# Prompt Makeover Chrome Extension
+# prompt makeuper Chrome Extension
 
-A Chrome extension that provides a convenient interface for the Prompt Makeover service. Optimize your prompts using AI-powered skill selection and iterative refinement.
+A Chrome extension that provides a convenient interface for the prompt makeuper service. Optimize your prompts using AI-powered skill selection and iterative refinement.
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ Alternatively:
 2. Navigate to and select the `extensions/` directory
 3. Click **Select Folder**
 
-The extension should now appear in your extensions list with the name "Prompt Makeover".
+The extension should now appear in your extensions list with the name "prompt makeuper".
 
 ## Usage
 
@@ -149,7 +149,7 @@ app.add_middleware(
 
 1. Make changes to any file in the `extensions/` directory
 2. Go to `chrome://extensions/`
-3. Click the **Refresh** icon on the Prompt Makeover extension card
+3. Click the **Refresh** icon on the prompt makeuper extension card
 4. Re-open the popup to see changes
 
 ### API Endpoints Used
@@ -205,4 +205,4 @@ This extension uses **Manifest V3** and is compatible with:
 
 ## License
 
-This extension is part of the Prompt Makeover project.
+This extension is part of the prompt makeuper project.

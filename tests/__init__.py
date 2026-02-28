@@ -1,1 +1,1 @@
-"""Tests for the Prompt Makeover Service."""
+"""Tests for the prompt makeuper Service."""

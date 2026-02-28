@@ -1,5 +1,5 @@
 /**
- * Prompt Makeover Chrome Extension - Background Service Worker
+ * prompt makeuper Chrome Extension - Background Service Worker
  * Handles context menu creation and actions
  */
 
@@ -15,15 +15,15 @@ chrome.runtime.onInstalled.addListener(() => {
 
   // Main context menu item
   chrome.contextMenus.create({
-    id: 'promptMakeoverRoot',
-    title: '✨ Prompt Makeover',
+    id: 'promptMakeuperRoot',
+    title: '✨ prompt makeuper',
     contexts: ['selection']
   });
 
   // Optimize selected text
   chrome.contextMenus.create({
     id: 'optimizeSelection',
-    parentId: 'promptMakeoverRoot',
+    parentId: 'promptMakeuperRoot',
     title: 'Optimize this selection',
     contexts: ['selection']
   });
@@ -31,7 +31,7 @@ chrome.runtime.onInstalled.addListener(() => {
   // Separator
   chrome.contextMenus.create({
     id: 'separator1',
-    parentId: 'promptMakeoverRoot',
+    parentId: 'promptMakeuperRoot',
     type: 'separator',
     contexts: ['selection']
   });
@@ -39,12 +39,12 @@ chrome.runtime.onInstalled.addListener(() => {
   // Open side panel
   chrome.contextMenus.create({
     id: 'openSidePanel',
-    parentId: 'promptMakeoverRoot',
+    parentId: 'promptMakeuperRoot',
     title: '📋 Open Side Panel',
     contexts: ['selection', 'page']
   });
 
-  console.log('Prompt Makeover context menus created');
+  console.log('prompt makeuper context menus created');
 });
 
 /**

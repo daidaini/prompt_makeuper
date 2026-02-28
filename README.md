@@ -1,4 +1,4 @@
-# Prompt Makeover Service
+# prompt makeuper Service
 
 A FastAPI-based service that enhances user-provided prompts using LLM-powered analysis and refinement. The service uses a skill-based architecture where predefined prompt patterns guide the optimization process.
 

@@ -7,7 +7,7 @@ from app.services.skill_manager import SkillManager
 from pathlib import Path
 
 app = FastAPI(
-    title="Prompt Makeover Service",
+    title="prompt makeuper Service",
     description="LLM-powered prompt optimization with skill-based refinement"
 )
 

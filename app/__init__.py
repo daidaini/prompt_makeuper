@@ -1,1 +1,1 @@
-"""Prompt Makeover Service - LLM-powered prompt optimization."""
+"""prompt makeuper Service - LLM-powered prompt optimization."""

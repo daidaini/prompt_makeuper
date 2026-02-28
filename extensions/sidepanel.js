@@ -1,5 +1,5 @@
 /**
- * Prompt Makeover Chrome Extension - Side Panel
+ * prompt makeuper Chrome Extension - Side Panel
  * Side panel version with persistent display and no health checks
  */
 

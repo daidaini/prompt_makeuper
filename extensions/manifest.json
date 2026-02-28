@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Prompt Makeover",
+  "version": "1.0.0",
+  "description": "Optimize your prompts using AI-powered skill selection and refinement",
+  "permissions": [
+    "activeTab",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  }
+}

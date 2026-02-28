@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Makeover</title>
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">✨ Prompt Makeover</h1>
+        </header>
+
+        <!-- Message area for errors/success notifications -->
+        <div id="messageArea" class="message-area hidden"></div>
+
+        <!-- Input section -->
+        <div class="section">
+            <label for="inputPrompt" class="label">Your Prompt</label>
+            <textarea
+                id="inputPrompt"
+                class="textarea input-textarea"
+                rows="8"
+                placeholder="Enter your prompt here..."
+                aria-label="Input prompt to optimize"
+            ></textarea>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="button-group">
+            <button id="optimizeBtn" class="btn btn-primary" disabled>
+                <span class="btn-text">Optimize</span>
+                <span class="btn-spinner hidden"></span>
+            </button>
+            <button id="clearBtn" class="btn btn-secondary">Clear</button>
+        </div>
+
+        <!-- Output section -->
+        <div class="section">
+            <div class="output-header">
+                <label for="outputPrompt" class="label">Optimized Prompt</label>
+                <button id="copyBtn" class="copy-btn" title="Copy to clipboard">
+                    <span class="copy-icon">📋</span>
+                    <span class="copy-text">Copy</span>
+                </button>
+            </div>
+            <textarea
+                id="outputPrompt"
+                class="textarea output-textarea"
+                rows="12"
+                readonly
+                placeholder="Your optimized prompt will appear here..."
+                aria-label="Optimized prompt output"
+            ></textarea>
+        </div>
+
+        <!-- Metadata section -->
+        <div id="metadataSection" class="metadata hidden">
+            <div class="metadata-item">
+                <span class="metadata-label">Skill Used:</span>
+                <span id="skillUsed" class="metadata-value">-</span>
+            </div>
+            <div class="metadata-item">
+                <span class="metadata-label">Iterations:</span>
+                <span id="iterations" class="metadata-value">-</span>
+            </div>
+        </div>
+
+        <!-- Footer with keyboard shortcut hint -->
+        <footer class="footer">
+            <span class="shortcut-hint">Press Ctrl/Cmd + Enter to optimize</span>
+        </footer>
+    </div>
+
+    <script src="sidepanel.js"></script>
+</body>
+</html>

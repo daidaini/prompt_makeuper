@@ -3,8 +3,9 @@
  * Side panel version with persistent display and no health checks
  */
 
-// API Configuration
-const API_BASE_URL = 'http://localhost:8000';
+// API Configuration - Read from manifest.json, fallback to localhost
+const manifest = chrome.runtime.getManifest();
+const API_BASE_URL = manifest.api_base_url || 'http://localhost:8000';
 const ENDPOINTS = {
     MAKEUP: `${API_BASE_URL}/makeup_prompt`
 };

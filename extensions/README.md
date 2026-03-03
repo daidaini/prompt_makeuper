@@ -36,6 +36,71 @@ Alternatively:
 
 The extension should now appear in your extensions list with the name "prompt makeuper".
 
+## Configuration
+
+The extension's API endpoint is configured in `manifest.json`. To use a different backend server:
+
+### Changing the API Endpoint
+
+1. **Open `manifest.json`** in the extensions directory
+2. **Find the `api_base_url` field** (line 5):
+   ```json
+   {
+     "manifest_version": 3,
+     "name": "Prompt Maker",
+     "api_base_url": "http://localhost:8000",
+     ...
+   }
+   ```
+3. **Update the URL** to match your backend server:
+   ```json
+   "api_base_url": "https://your-server.com"
+   ```
+4. **Update `host_permissions`** to match (line 12):
+   ```json
+   "host_permissions": [
+     "https://your-server.com/*"
+   ]
+   ```
+5. **Reload the extension** in Chrome:
+   - Go to `chrome://extensions/`
+   - Disable and re-enable the extension
+   - Or click the refresh button on the extension card
+
+### Environment Examples
+
+**Development (local):**
+```json
+{
+  "api_base_url": "http://localhost:8000",
+  "host_permissions": ["http://localhost:8000/*"]
+}
+```
+
+**Staging Server:**
+```json
+{
+  "api_base_url": "https://staging.example.com",
+  "host_permissions": ["https://staging.example.com/*"]
+}
+```
+
+**Production Server:**
+```json
+{
+  "api_base_url": "https://api.example.com",
+  "host_permissions": ["https://api.example.com/*"]
+}
+```
+
+### Important Notes
+
+- **Both `api_base_url` and `host_permissions` must match** - Chrome requires both to allow API communication
+- **No trailing slash needed** - The extension appends endpoints to the base URL
+- **Use http for localhost** - HTTPS requires valid certificates (use localhost for development)
+- **Reload required** - Changes to `manifest.json` require disabling and re-enabling the extension
+- **Default fallback** - If `api_base_url` is not specified, the extension defaults to `http://localhost:8000`
+
 ## Usage
 
 ### Basic Usage
@@ -160,9 +225,11 @@ The extension uses Chrome's Manifest V3 format:
    curl http://localhost:8000/health
    ```
 
-3. Check if the port is correct in `popup.js`:
-   - Look for `const API_BASE_URL = 'http://localhost:8000';`
-   - Adjust if your server uses a different port
+3. Check if the API endpoint is configured correctly:
+   - Open `manifest.json` in the extensions directory
+   - Verify `api_base_url` matches your server's address
+   - Ensure `host_permissions` includes the same domain
+   - Reload the extension after making changes
 
 ### "Network Error" or "Request Timeout"
 

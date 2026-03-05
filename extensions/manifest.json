@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Prompt Maker",
+  "name": "Prompt Makeuper",
   "version": "1.0.0",
   "description": "Optimize your prompts using AI-powered skill selection and refinement",
   "api_base_url": "http://localhost:8000",

@@ -1,6 +1,7 @@
 from app.services.llm_client import LLMClient
 from app.services.skill_manager import SkillManager
 from app.services.embedding_selector import EmbeddingSkillSelector
+from app.services.date_filter import replace_dates_with_fuzzy
 from app.config import settings
 
 
@@ -85,9 +86,16 @@ class PromptOptimizer:
         # Stage 2: Apply skill with output format
         optimized = await self._apply_skill(input_prompt, skill, output_type)
 
+        # Stage 3: Post-process to remove specific dates
+        final_prompt, replacements_count = replace_dates_with_fuzzy(optimized)
+
+        # Log if dates were found and replaced
+        if replacements_count > 0:
+            print(f"[DateFilter] Replaced {replacements_count} specific date(s) with fuzzy expressions")
+
         # Return result immediately without quality check iterations
         return {
-            "prompt": optimized,
+            "prompt": final_prompt,
             "skill": selected_skill_name,
             "iterations": 1
         }

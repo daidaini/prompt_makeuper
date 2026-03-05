@@ -17,7 +17,7 @@ chrome.runtime.onInstalled.addListener(() => {
   // Main context menu item
   chrome.contextMenus.create({
     id: 'promptMakeuperRoot',
-    title: '✨ prompt makeuper',
+    title: '✨ Prompt Makeuper',
     contexts: ['selection']
   });
 

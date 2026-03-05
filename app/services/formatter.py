@@ -4,6 +4,7 @@ Format instruction generator for different output types.
 This module provides format-specific instructions that are injected
 into the LLM's system prompt to control the output structure.
 """
+from app.services.date_filter import get_date_constraint_instruction
 
 
 def get_format_instructions(output_type: str) -> str:
@@ -16,6 +17,9 @@ def get_format_instructions(output_type: str) -> str:
     Returns:
         Format instruction string to append to system prompt
     """
+    # Get date constraint (applies to all output types)
+    date_constraint = get_date_constraint_instruction()
+
     if output_type == "xml":
         return """
 **OUTPUT FORMAT REQUIREMENT - XML:**
@@ -47,6 +51,8 @@ CRITICAL XML REQUIREMENTS:
 - Use <item> tags for list items within <instructions>
 - Maintain hierarchical structure with proper nesting
 - DO NOT include markdown code blocks (```xml) - output raw XML only
+
+{date_constraint}
 """
     else:  # markdown (default)
         return """
@@ -59,4 +65,6 @@ You MUST output the optimized prompt as valid Markdown with:
 - Clear visual hierarchy
 
 Output ONLY the markdown, nothing else.
+
+{date_constraint}
 """

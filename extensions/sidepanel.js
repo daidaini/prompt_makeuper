@@ -9,6 +9,7 @@ const API_BASE_URL = manifest.api_base_url || 'http://localhost:8000';
 const ENDPOINTS = {
     MAKEUP: `${API_BASE_URL}/makeup_prompt`
 };
+const PENDING_AUTO_OPTIMIZE_KEY = 'pendingAutoOptimize';
 
 // DOM Elements
 const elements = {
@@ -31,8 +32,19 @@ const elements = {
 const state = {
     isLoading: false,
     inputValue: '',
-    outputType: 'markdown'
+    outputType: 'markdown',
+    latestRequestToken: 0,
+    lastHandledAutoOptimizeId: null,
+    autoOptimizeTimerId: null
 };
+
+function getPendingStorageArea() {
+    return chrome.storage.session || chrome.storage.local;
+}
+
+function getPendingStorageAreaName() {
+    return chrome.storage.session ? 'session' : 'local';
+}
 
 /**
  * Initialize the application
@@ -47,27 +59,76 @@ function init() {
     // Attach event listeners
     attachEventListeners();
 
-    // Listen for messages from background script
-    chrome.runtime.onMessage.addListener(handleBackgroundMessage);
+    // Handle auto-optimize requests persisted by the background worker
+    chrome.storage.onChanged.addListener(handleStorageChange);
+    consumePendingAutoOptimize().catch((error) => {
+        console.error('Failed to consume pending auto-optimize request:', error);
+    });
 
     // Focus on input field
     elements.inputPrompt.focus();
 }
 
 /**
- * Handle messages from background script
+ * Handle storage changes from the background worker.
  */
-function handleBackgroundMessage(message, sender, sendResponse) {
-    if (message.action === 'autoOptimize' && message.prompt) {
-        // Fill the input with the selected text
-        elements.inputPrompt.value = message.prompt;
-        handleInputChange();
-
-        // Auto-trigger optimization
-        setTimeout(() => {
-            optimizePrompt();
-        }, 300);
+function handleStorageChange(changes, areaName) {
+    if (areaName !== getPendingStorageAreaName()) {
+        return;
     }
+
+    const change = changes[PENDING_AUTO_OPTIMIZE_KEY];
+    if (!change || !change.newValue) {
+        return;
+    }
+
+    processAutoOptimizeRequest(change.newValue);
+}
+
+async function consumePendingAutoOptimize() {
+    const storageArea = getPendingStorageArea();
+    const result = await storageArea.get(PENDING_AUTO_OPTIMIZE_KEY);
+    const pendingRequest = result[PENDING_AUTO_OPTIMIZE_KEY];
+
+    if (!pendingRequest) {
+        return;
+    }
+
+    processAutoOptimizeRequest(pendingRequest);
+}
+
+async function clearPendingAutoOptimize() {
+    const storageArea = getPendingStorageArea();
+    await storageArea.remove(PENDING_AUTO_OPTIMIZE_KEY);
+}
+
+function scheduleAutoOptimize() {
+    if (state.autoOptimizeTimerId) {
+        clearTimeout(state.autoOptimizeTimerId);
+    }
+
+    state.autoOptimizeTimerId = setTimeout(() => {
+        state.autoOptimizeTimerId = null;
+        optimizePrompt();
+    }, 0);
+}
+
+function processAutoOptimizeRequest(request) {
+    if (!request || !request.prompt || !request.requestId) {
+        return;
+    }
+
+    if (request.requestId === state.lastHandledAutoOptimizeId) {
+        return;
+    }
+
+    state.lastHandledAutoOptimizeId = request.requestId;
+    elements.inputPrompt.value = request.prompt;
+    handleInputChange();
+    clearPendingAutoOptimize().catch((error) => {
+        console.error('Failed to clear pending auto-optimize request:', error);
+    });
+    scheduleAutoOptimize();
 }
 
 /**
@@ -181,6 +242,7 @@ async function fetchWithTimeout(url, options = {}) {
  */
 async function optimizePrompt() {
     const inputPrompt = elements.inputPrompt.value.trim();
+    const requestToken = ++state.latestRequestToken;
 
     if (!inputPrompt) {
         showMessage('Please enter a prompt to optimize.', 'error');
@@ -210,6 +272,10 @@ async function optimizePrompt() {
 
         const data = await response.json();
 
+        if (requestToken !== state.latestRequestToken) {
+            return;
+        }
+
         // Update UI with results
         elements.outputPrompt.value = data.output_prompt || 'No output received';
         showMetadata(data.skill_used, data.iterations);
@@ -219,6 +285,10 @@ async function optimizePrompt() {
         showMessage(`Prompt optimized successfully (${formatLabel} format)!`, 'success');
 
     } catch (error) {
+        if (requestToken !== state.latestRequestToken) {
+            return;
+        }
+
         console.error('Optimization error:', error);
         let errorMessage = 'Failed to optimize prompt.';
 
@@ -233,7 +303,9 @@ async function optimizePrompt() {
         showMessage(errorMessage, 'error');
         elements.outputPrompt.value = '';
     } finally {
-        setLoading(false);
+        if (requestToken === state.latestRequestToken) {
+            setLoading(false);
+        }
     }
 }
 

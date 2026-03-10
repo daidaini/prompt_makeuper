@@ -6,6 +6,26 @@
 // API Configuration - Read from manifest.json, fallback to localhost
 const manifest = chrome.runtime.getManifest();
 const API_BASE_URL = manifest.api_base_url || 'http://localhost:8000';
+const PENDING_AUTO_OPTIMIZE_KEY = 'pendingAutoOptimize';
+
+function getPendingStorageArea() {
+  return chrome.storage.session || chrome.storage.local;
+}
+
+async function storePendingAutoOptimize(prompt, tab) {
+  const storageArea = getPendingStorageArea();
+  const payload = {
+    prompt,
+    requestId: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    requestedAt: Date.now(),
+    sourceTabId: tab?.id,
+    sourceWindowId: tab?.windowId
+  };
+
+  await storageArea.set({
+    [PENDING_AUTO_OPTIMIZE_KEY]: payload
+  });
+}
 
 /**
  * Create context menu items on extension install
@@ -63,30 +83,21 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
  * Optimize the selected text
  */
 async function handleOptimizeSelection(info, tab) {
-  const selectedText = info.selectionText.trim();
+  const selectedText = info.selectionText?.trim();
 
   if (!selectedText) {
     return;
   }
 
-  // Open side panel
-  await chrome.sidePanel.open({ windowId: tab.windowId });
-
-  // Wait a bit for the side panel to open
-  await new Promise(resolve => setTimeout(resolve, 500));
-
-  // Send message to side panel with the selected text
   try {
-    const [sidePanelTab] = await chrome.tabs.query({ url: chrome.runtime.getURL('sidepanel.html') });
-
-    if (sidePanelTab) {
-      chrome.tabs.sendMessage(sidePanelTab.id, {
-        action: 'autoOptimize',
-        prompt: selectedText
-      });
+    if (!tab?.windowId) {
+      throw new Error('No active window is available for the side panel.');
     }
+
+    await storePendingAutoOptimize(selectedText, tab);
+    await chrome.sidePanel.open({ windowId: tab.windowId });
   } catch (error) {
-    console.error('Failed to send message to side panel:', error);
+    console.error('Failed to auto-optimize selected text:', error);
   }
 }
 

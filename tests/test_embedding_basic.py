@@ -22,7 +22,7 @@ except ImportError as e:
 # Test initialization
 print("\n--- Testing EmbeddingSkillSelector ---")
 
-skills_dir = Path("app/skills/templates")
+skills_dir = Path("app/skills")
 skill_manager = SkillManager(skills_dir)
 print(f"Loaded {len(skill_manager.list_skills())} skills")
 

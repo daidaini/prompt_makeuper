@@ -1,6 +1,6 @@
 # prompt makeuper Service
 
-A FastAPI-based service that enhances user-provided prompts using LLM-powered analysis and refinement. The service uses a skill-based architecture where predefined prompt patterns guide the optimization process.
+A FastAPI-based service that enhances user-provided prompts using LLM-powered analysis and refinement. The service uses a skill-based architecture where predefined `SKILL.md` files guide the optimization process.
 
 ## Architecture
 
@@ -11,9 +11,10 @@ User Input → Skill Selection → Skill Application → Optimized Prompt
 
 ## Features
 
-- **8 Predefined Skills**: Organized by complexity (Foundation, Intermediate, Advanced)
+- **8 Predefined Skills**: Stored as standard `SKILL.md` files for easier interoperability
 - **Intelligent LLM-Powered Skill Selection**: Automatically chooses the best optimization strategy
 - **Two-Round Optimization Process**: Fast and efficient (skill selection + single application)
+- **Progressive Skill Loading**: Index frontmatter at startup, lazy-load full skill content on demand
 - **Comprehensive LLM Interaction Logging**: Debug and analyze all LLM interactions
 - **OpenAI-Compatible**: Works with OpenAI, Azure OpenAI, Ollama, LM Studio, and more
 - **FastAPI Best Practices**: Async/await, Pydantic validation, clean architecture
@@ -166,7 +167,7 @@ List available optimization skills.
 **Response:**
 ```json
 {
-  "skills": ["clarity", "specificity", "structure", "examples", "constraints"]
+  "skills": ["clarity", "specificity", "structure", "examples", "constraints", "mental_model", "progressive", "self_verify"]
 }
 ```
 
@@ -193,11 +194,14 @@ prompt_makeuper/
 │   │   └── schemas.py          # Pydantic models
 │   ├── services/
 │   │   ├── llm_client.py       # OpenAI client
-│   │   ├── skill_manager.py    # Skill management
+│   │   ├── skill_manager.py    # Skill indexing and lazy loading
+│   │   ├── skill_parser.py     # SKILL.md parser
 │   │   ├── embedding_selector.py # Embedding-based skill selection
 │   │   └── optimizer.py        # Optimization pipeline
 │   └── skills/
-│       └── templates/          # YAML skill definitions
+│       ├── clarity/
+│       │   └── SKILL.md
+│       └── ...                 # One directory per skill
 ├── docs/                       # Documentation
 │   ├── QUICKSTART.md           # Quick start guide
 │   ├── makeup_prompt_api_documentation.md  # API documentation

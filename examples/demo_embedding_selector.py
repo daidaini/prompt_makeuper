@@ -32,7 +32,7 @@ def demo_embedding_selector():
     print("✅ sentence-transformers 已安装\n")
 
     # 初始化
-    skills_dir = Path(__file__).parent.parent / "app/skills/templates"
+    skills_dir = Path(__file__).parent.parent / "app/skills"
     skill_manager = SkillManager(skills_dir)
 
     print("📦 加载嵌入模型...")
@@ -99,7 +99,7 @@ def test_caching():
     """测试缓存功能"""
     print("🔄 测试缓存功能\n")
 
-    skills_dir = Path(__file__).parent.parent / "app/skills/templates"
+    skills_dir = Path(__file__).parent.parent / "app/skills"
     skill_manager = SkillManager(skills_dir)
     selector = EmbeddingSkillSelector(skill_manager)
 

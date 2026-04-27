@@ -2,9 +2,6 @@ from app.services.llm_client import LLMClient
 from app.services.skill_manager import SkillManager
 from app.services.embedding_selector import EmbeddingSkillSelector
 from app.services.date_filter import replace_dates_with_fuzzy
-from app.config import settings
-
-
 def detect_language(text: str) -> str:
     """
     Detect language from input text using Unicode ranges.
@@ -113,7 +110,7 @@ class PromptOptimizer:
         # Try embedding selector first (fast, no API cost)
         if self.embedding_selector.is_available():
             selected_skill = self.embedding_selector.select_skill(prompt)
-            if selected_skill and selected_skill in self.skills.skills:
+            if selected_skill and selected_skill in self.skills.metadata:
                 return selected_skill
 
         # Fallback to LLM selection if embedding selector fails
@@ -124,7 +121,7 @@ class PromptOptimizer:
         )
         return response.strip().lower()
 
-    async def _apply_skill(self, prompt: str, skill: dict, output_type: str = "markdown") -> str:
+    async def _apply_skill(self, prompt: str, skill, output_type: str = "markdown") -> str:
         """
         Apply a skill's optimization template with specified output format.
 
@@ -144,17 +141,17 @@ class PromptOptimizer:
         from app.services.formatter import get_format_instructions
         format_instruction = get_format_instructions(output_type)
 
-        optimization_prompt = skill["optimization_prompt"].format(
+        optimization_prompt = skill.optimization_prompt.format(
             input_prompt=prompt
         )
         messages = [
             {
                 "role": "system",
-                "content": skill["system_prompt"] + "\n\n" + format_instruction + "\n\nIMPORTANT: " + language_instruction
+                "content": skill.system_prompt + "\n\n" + format_instruction + "\n\nIMPORTANT: " + language_instruction
             },
             {"role": "user", "content": optimization_prompt}
         ]
-        return await self.llm.chat(messages, stage="skill_application", skill_name=skill["name"])
+        return await self.llm.chat(messages, stage="skill_application", skill_name=skill.name)
 
     async def _check_quality(self, prompt: str, iteration: int = None) -> bool:
         """

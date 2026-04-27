@@ -17,7 +17,7 @@ try:
     from scipy.spatial.distance import cosine
     from sentence_transformers import SentenceTransformer
     EMBEDDINGS_AVAILABLE = True
-except ImportError:
+except Exception:
     EMBEDDINGS_AVAILABLE = False
     np = None
     cosine = None
@@ -80,9 +80,9 @@ class EmbeddingSkillSelector:
 
             # Generate embeddings for all skills
             self._skill_embeddings = {}
-            for skill_name, skill_data in self.skill_manager.skills.items():
+            for skill_name, skill_data in self.skill_manager.metadata.items():
                 # Combine name and description for richer semantic representation
-                skill_text = f"{skill_name}: {skill_data['description']}"
+                skill_text = f"{skill_name}: {skill_data.description}"
                 embedding = self._model.encode(skill_text, convert_to_numpy=True)
                 self._skill_embeddings[skill_name] = embedding
 

@@ -19,7 +19,16 @@ def test_skills_endpoint():
     data = response.json()
     assert "skills" in data
     assert isinstance(data["skills"], list)
-    expected_skills = ["clarity", "specificity", "structure", "examples", "constraints"]
+    expected_skills = [
+        "clarity",
+        "specificity",
+        "structure",
+        "examples",
+        "constraints",
+        "mental_model",
+        "progressive",
+        "self_verify",
+    ]
     assert all(skill in data["skills"] for skill in expected_skills)
 
 

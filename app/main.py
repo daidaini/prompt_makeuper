@@ -20,7 +20,7 @@ app.add_middleware(
 
 # Initialize services
 llm_client = LLMClient()
-skill_manager = SkillManager(Path("app/skills/templates"))
+skill_manager = SkillManager(Path("app/skills"))
 optimizer = PromptOptimizer(llm_client, skill_manager)
 
 

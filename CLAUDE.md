@@ -24,27 +24,26 @@ pip install -r requirements.txt
 
 ## Architecture Overview
 
-This is a **skill-based prompt optimization service** where skills are YAML-defined templates (not hardcoded classes). The architecture follows a two-stage LLM pipeline:
+This is a **skill-based prompt optimization service** where skills are `SKILL.md` files with YAML frontmatter and markdown sections (not hardcoded classes). The architecture follows a two-stage LLM pipeline:
 
 ```
-User Prompt → LLM selects best skill → Apply skill template → Iterative refinement → Optimized Prompt
+User Prompt → LLM selects best skill → Lazy-load skill body → Apply skill template → Optimized Prompt
 ```
 
 ### Key Architectural Patterns
 
-**1. Skills as YAML Templates**
-Skills are defined in `app/skills/templates/*.yaml` with three fields:
-- `name`: Skill identifier (e.g., "clarity", "specificity")
-- `description`: Used by LLM for skill selection
-- `system_prompt`: Sets the optimization context
-- `optimization_prompt`: Template using `{input_prompt}` placeholder
+**1. Skills as SKILL.md Files**
+Skills are defined in `app/skills/<skill_name>/SKILL.md` with:
+- YAML frontmatter containing `name` and `description`
+- `## System Prompt` section for the optimization context
+- `## Optimization Prompt` section using the `{input_prompt}` placeholder
 
-Adding a new skill means creating a new YAML file—no code changes needed.
+Adding a new skill means creating a new `SKILL.md` file in its own directory—no code changes needed.
 
 **2. Two-Stage LLM Pipeline**
 The `PromptOptimizer` service orchestrates:
 - **Stage 1**: LLM selects the most appropriate skill by analyzing the user's prompt against skill descriptions
-- **Stage 2**: Selected skill is applied iteratively until quality threshold (score ≥ 8) is met
+- **Stage 2**: The selected skill body is loaded on demand and applied to the prompt
 
 **3. Service Layer Dependency Chain**
 ```
@@ -54,7 +53,7 @@ PromptOptimizer (optimizer.py)
     ↓
 SkillManager (skill_manager.py) + LLMClient (llm_client.py)
     ↓
-YAML files (templates/) + OpenAI API
+    SKILL.md files + OpenAI API
 ```
 
 When modifying the optimization pipeline, follow this dependency order:
@@ -76,19 +75,23 @@ Configuration is loaded via `pydantic-settings` in `app/config.py`. The `Setting
 
 To add a new optimization skill:
 
-1. Create `app/skills/templates/your_skill.yaml`:
-```yaml
+1. Create `app/skills/your_skill/SKILL.md`:
+```markdown
+---
 name: your_skill
 description: What this skill improves
+---
 
-system_prompt: |
-  You are an expert at...
-  Return ONLY the rewritten prompt.
+## System Prompt
 
-optimization_prompt: |
-  Original prompt: {input_prompt}
+You are an expert at...
+Return ONLY the rewritten prompt.
 
-  Rewrite this prompt to...
+## Optimization Prompt
+
+Original prompt: {input_prompt}
+
+Rewrite this prompt to...
 ```
 
 2. The skill is immediately available—no code changes required. The LLM will automatically consider it during skill selection.

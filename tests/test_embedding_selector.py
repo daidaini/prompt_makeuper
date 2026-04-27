@@ -19,7 +19,7 @@ class TestFallbackBehavior:
 
     def test_embedding_selector_unavailable_fallback(self):
         """Test behavior when sentence-transformers is not installed."""
-        skills_dir = Path("app/skills/templates")
+        skills_dir = Path("app/skills")
         skill_manager = SkillManager(skills_dir)
         selector = EmbeddingSkillSelector(skill_manager)
 
@@ -40,7 +40,7 @@ class TestFallbackBehavior:
             # Should return a valid skill
             result = selector.select_skill("test prompt")
             assert result is not None
-            assert result in skill_manager.skills
+            assert result in skill_manager.metadata
 
 
 # Skip remaining tests if sentence-transformers is not installed
@@ -54,7 +54,7 @@ skip_if_no_embeddings = pytest.mark.skipif(
 @pytest.fixture
 def skill_manager():
     """Create a skill manager for testing."""
-    skills_dir = Path("app/skills/templates")
+    skills_dir = Path("app/skills")
     return SkillManager(skills_dir)
 
 
@@ -96,7 +96,7 @@ class TestSkillSelection:
         selected = embedding_selector.select_skill(prompt)
 
         assert selected is not None
-        assert selected in skill_manager.skills
+        assert selected in skill_manager.metadata
 
     def test_select_skill_clarity_focused(self, embedding_selector):
         """Test that clarity-focused prompts select clarity skill."""

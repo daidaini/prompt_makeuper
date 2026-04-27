@@ -9,7 +9,7 @@ from app.services.skill_manager import SkillManager
 @pytest.fixture
 def skill_manager():
     """Create a SkillManager instance."""
-    skills_dir = Path("app/skills/templates")
+    skills_dir = Path("app/skills")
     return SkillManager(skills_dir)
 
 
@@ -22,7 +22,7 @@ class TestMarkdownOutputFormat:
 
         for skill_name in skill_names:
             skill = skill_manager.get_skill(skill_name)
-            system_prompt = skill["system_prompt"]
+            system_prompt = skill.system_prompt
             assert "markdown" in system_prompt.lower(), \
                 f"Skill '{skill_name}' system_prompt should explicitly mention markdown"
 
@@ -32,7 +32,7 @@ class TestMarkdownOutputFormat:
 
         for skill_name in skill_names:
             skill = skill_manager.get_skill(skill_name)
-            system_prompt = skill["system_prompt"]
+            system_prompt = skill.system_prompt
             assert "format requirements" in system_prompt.lower() or \
                    "format" in system_prompt.lower(), \
                 f"Skill '{skill_name}' should have format requirements in system_prompt"
@@ -40,7 +40,7 @@ class TestMarkdownOutputFormat:
     def test_clarity_template_markdown_elements(self, skill_manager):
         """Test that clarity template specifies appropriate markdown elements."""
         skill = skill_manager.get_skill("clarity")
-        system_prompt = skill["system_prompt"]
+        system_prompt = skill.system_prompt
 
         # Check for specific markdown elements
         assert "##" in system_prompt or "#" in system_prompt, \
@@ -53,7 +53,7 @@ class TestMarkdownOutputFormat:
     def test_structure_template_markdown_elements(self, skill_manager):
         """Test that structure template specifies section headers."""
         skill = skill_manager.get_skill("structure")
-        system_prompt = skill["system_prompt"]
+        system_prompt = skill.system_prompt
 
         # Structure should emphasize section headers
         assert "##" in system_prompt, \
@@ -66,7 +66,7 @@ class TestMarkdownOutputFormat:
     def test_examples_template_code_blocks(self, skill_manager):
         """Test that examples template specifies code blocks."""
         skill = skill_manager.get_skill("examples")
-        system_prompt = skill["system_prompt"]
+        system_prompt = skill.system_prompt
 
         # Examples should use code blocks
         assert "```" in system_prompt or "code block" in system_prompt.lower(), \
@@ -77,7 +77,7 @@ class TestMarkdownOutputFormat:
     def test_specificity_template_sections(self, skill_manager):
         """Test that specificity template mentions appropriate sections."""
         skill = skill_manager.get_skill("specificity")
-        system_prompt = skill["system_prompt"]
+        system_prompt = skill.system_prompt
 
         assert "## Context" in system_prompt or "Context" in system_prompt, \
             "Specificity template should mention Context section"
@@ -87,7 +87,7 @@ class TestMarkdownOutputFormat:
     def test_constraints_template_format_specs(self, skill_manager):
         """Test that constraints template mentions output format specifications."""
         skill = skill_manager.get_skill("constraints")
-        system_prompt = skill["system_prompt"]
+        system_prompt = skill.system_prompt
 
         assert "## Constraints" in system_prompt or "Constraints" in system_prompt, \
             "Constraints template should mention Constraints section"
@@ -102,7 +102,7 @@ class TestMarkdownOutputFormat:
 
         for skill_name in skill_names:
             skill = skill_manager.get_skill(skill_name)
-            system_prompt = skill["system_prompt"]
+            system_prompt = skill.system_prompt
             # Check for strong markdown requirement language
             assert any(phrase in system_prompt for phrase in [
                 "MUST be valid markdown",
@@ -118,7 +118,7 @@ class TestMarkdownOutputFormat:
 
         for skill_name in skill_names:
             skill = skill_manager.get_skill(skill_name)
-            system_prompt = skill["system_prompt"]
+            system_prompt = skill.system_prompt
             # Skills may maintain intent explicitly or through "enhance" which implies preserving original intent
             assert "original intent" in system_prompt.lower() or \
                    "maintain" in system_prompt.lower() or \
@@ -131,7 +131,7 @@ class TestMarkdownOutputFormat:
 
         for skill_name in skill_names:
             skill = skill_manager.get_skill(skill_name)
-            system_prompt = skill["system_prompt"]
+            system_prompt = skill.system_prompt
             assert "no explanations" in system_prompt.lower() or \
                    "ONLY the" in system_prompt or \
                    "return only" in system_prompt.lower(), \

@@ -1,6 +1,12 @@
 from typing import List, Dict, Optional
-import yaml
 from pathlib import Path
+
+from app.services.skill_parser import (
+    SkillDefinition,
+    SkillMetadata,
+    parse_skill_definition,
+    parse_skill_metadata,
+)
 
 
 class SkillManager:
@@ -11,21 +17,21 @@ class SkillManager:
         Initialize the skill manager.
 
         Args:
-            skills_dir: Path to directory containing skill YAML files
+            skills_dir: Path to directory containing per-skill SKILL.md files
         """
         self.skills_dir = skills_dir
-        self.skills = self._load_skills()
+        self.metadata = self._scan_skills()
+        self._skill_cache: Dict[str, SkillDefinition] = {}
 
-    def _load_skills(self) -> Dict[str, dict]:
-        """Load all skill definitions from YAML files."""
-        skills = {}
-        for skill_file in self.skills_dir.glob("*.yaml"):
-            with open(skill_file, encoding="utf-8") as f:
-                skill_data = yaml.safe_load(f)
-                skills[skill_data["name"]] = skill_data
+    def _scan_skills(self) -> Dict[str, SkillMetadata]:
+        """Index available skills by parsing only SKILL.md frontmatter."""
+        skills: Dict[str, SkillMetadata] = {}
+        for skill_file in sorted(self.skills_dir.glob("*/SKILL.md")):
+            metadata = parse_skill_metadata(skill_file)
+            skills[metadata.name] = metadata
         return skills
 
-    def get_skill(self, name: str) -> Optional[dict]:
+    def get_skill(self, name: str) -> Optional[SkillDefinition]:
         """
         Get a specific skill by name.
 
@@ -33,9 +39,16 @@ class SkillManager:
             name: The skill name to retrieve
 
         Returns:
-            Skill dict or None if not found
+            Parsed skill definition or None if not found
         """
-        return self.skills.get(name)
+        metadata = self.metadata.get(name)
+        if metadata is None:
+            return None
+
+        if name not in self._skill_cache:
+            self._skill_cache[name] = parse_skill_definition(metadata.path)
+
+        return self._skill_cache[name]
 
     def list_skills(self) -> List[str]:
         """
@@ -44,7 +57,7 @@ class SkillManager:
         Returns:
             List of skill names
         """
-        return list(self.skills.keys())
+        return list(self.metadata.keys())
 
     def get_skill_selection_prompt(self, user_prompt: str) -> str:
         """
@@ -56,10 +69,10 @@ class SkillManager:
         Returns:
             A prompt string for skill selection
         """
-        skill_descriptions = "\n".join([
-            f"- {name}: {skill['description']}"
-            for name, skill in self.skills.items()
-        ])
+        skill_descriptions = "\n".join(
+            f"- {name}: {skill.description}"
+            for name, skill in self.metadata.items()
+        )
         return f"""Analyze the user's prompt and select the most appropriate optimization skill from:
 
 {skill_descriptions}

@@ -221,7 +221,6 @@ prompt_makeuper/
 │   │   ├── llm_client.py       # OpenAI client
 │   │   ├── skill_manager.py    # Skill indexing and lazy loading
 │   │   ├── skill_parser.py     # SKILL.md parser
-│   │   ├── embedding_selector.py # Embedding-based skill selection
 │   │   └── optimizer.py        # Optimization pipeline
 │   └── skills/
 │       ├── clarity/
@@ -230,9 +229,8 @@ prompt_makeuper/
 ├── docs/                       # Documentation
 │   ├── QUICKSTART.md           # Quick start guide
 │   ├── makeup_prompt_api_documentation.md  # API documentation
-│   └── EMBEDDING_SELECTOR_REPORT.md        # Embedding selector report
+│   └── EMBEDDING_SELECTOR_REPORT.md        # Historical design notes
 ├── examples/                   # Example scripts
-│   └── demo_embedding_selector.py          # Embedding selector demo
 ├── tests/                      # Test suite
 ├── extensions/                 # Chrome extension
 ├── requirements.txt
@@ -315,18 +313,7 @@ cat logs/*.log | jq -r '.metadata.skill_name' | sort | uniq -c
 
 - **[Quick Start Guide](./docs/QUICKSTART.md)** - Get up and running in 3 steps
 - **[API Documentation](./docs/makeup_prompt_api_documentation.md)** - Complete API reference and architecture
-- **[Embedding Selector Report](./docs/EMBEDDING_SELECTOR_REPORT.md)** - Implementation details and performance analysis
-
-## Examples
-
-Run the embedding selector demo:
-```bash
-# Demo embedding-based skill selection
-python3 examples/demo_embedding_selector.py
-
-# Test caching functionality
-python3 examples/demo_embedding_selector.py --cache
-```
+- **[Embedding Selector Report](./docs/EMBEDDING_SELECTOR_REPORT.md)** - Historical notes from the previous selector implementation
 
 ## Usage Examples
 

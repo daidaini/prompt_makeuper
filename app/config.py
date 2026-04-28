@@ -14,6 +14,11 @@ class Settings(BaseSettings):
     OPENAI_BASE_URL: str = Field(default="https://api.openai.com/v1")
     OPENAI_MODEL: str = Field(default="gpt-4o-mini")
 
+    # Flash Model Configuration (for fast skill selection)
+    FLASH_API_KEY: str | None = Field(default=None, description="Flash model API key")
+    FLASH_BASE_URL: str | None = Field(default=None, description="Flash model base URL")
+    FLASH_MODEL: str | None = Field(default=None, description="Flash model identifier")
+
     # Optimization Settings
     MAX_ITERATIONS: int = Field(default=3)
     TEMPERATURE: float = Field(default=0.7)

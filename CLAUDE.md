@@ -33,7 +33,7 @@ pip install -r requirements.txt
 This is a **skill-based prompt optimization service** where skills are `SKILL.md` files with YAML frontmatter and markdown sections (not hardcoded classes). The architecture follows a two-stage LLM pipeline:
 
 ```
-User Prompt → LLM selects best skill → Lazy-load skill body → Apply skill template → Optimized Prompt
+User Prompt → Flash model selects best skill → Lazy-load skill body → Apply skill template → Optimized Prompt
 ```
 
 ### Key Architectural Patterns
@@ -48,7 +48,7 @@ Adding a new skill means creating a new `SKILL.md` file in its own directory—n
 
 **2. Two-Stage LLM Pipeline**
 The `PromptOptimizer` service orchestrates:
-- **Stage 1**: LLM selects the most appropriate skill by analyzing the user's prompt against skill descriptions
+- **Stage 1**: Flash model selects the most appropriate skill by analyzing the user's prompt against skill descriptions
 - **Stage 2**: The selected skill body is loaded on demand and applied to the prompt
 
 **3. Service Layer Dependency Chain**
@@ -73,6 +73,7 @@ All LLM settings are in `.env`:
 - `OPENAI_API_KEY`: API credential
 - `OPENAI_BASE_URL`: Supports any OpenAI-compatible endpoint (OpenAI, Azure, Ollama, LM Studio, etc.)
 - `OPENAI_MODEL`: Model identifier
+- `FLASH_API_KEY` / `FLASH_BASE_URL` / `FLASH_MODEL`: Optional fast-model overrides for skill selection; defaults to `OPENAI_*`
 - `TEMPERATURE`: LLM temperature
 
 Configuration is loaded via `pydantic-settings` in `app/config.py`. The `Settings` class automatically reads from `.env` file—no manual parsing needed.
@@ -112,7 +113,7 @@ When adding new features, add tests to the appropriate file. API tests use FastA
 
 ### Important Implementation Details
 
-- **Skill selection uses LLM**: The `PromptOptimizer._select_skill()` method asks the LLM to choose the best skill based on skill descriptions. This means prompt quality affects selection accuracy.
+- **Skill selection uses flash model**: The `PromptOptimizer._select_skill()` method asks the flash model to choose the best skill based on skill descriptions. If it returns an unknown skill, the main model is used as a fallback.
 - **Quality check threshold**: Iterative refinement stops when the LLM rates the prompt ≥ 8/10 on clarity/specificity. Adjust `_check_quality()` to change this threshold.
 - **Error handling**: LLM client failures raise exceptions to FastAPI, which returns 500 Internal Server Error. For production, consider adding retry logic or fallback skills.
 - **Async throughout**: All LLM calls and service methods are async. FastAPI runs them in the event loop without blocking.

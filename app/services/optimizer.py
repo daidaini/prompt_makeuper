@@ -1,6 +1,5 @@
 from app.services.llm_client import LLMClient
 from app.services.skill_manager import SkillManager
-from app.services.embedding_selector import EmbeddingSkillSelector
 from app.services.date_filter import replace_dates_with_fuzzy
 def detect_language(text: str) -> str:
     """
@@ -62,8 +61,6 @@ class PromptOptimizer:
         """
         self.llm = llm_client
         self.skills = skill_manager
-        # Initialize embedding selector for fast skill selection
-        self.embedding_selector = EmbeddingSkillSelector(skill_manager)
 
     async def optimize(
         self,
@@ -107,7 +104,7 @@ class PromptOptimizer:
 
     async def _select_skill(self, prompt: str) -> str:
         """
-        Select the best skill for the prompt using embeddings with LLM fallback.
+        Select the best skill for the prompt using the flash model with main-model fallback.
 
         Args:
             prompt: The user's input prompt
@@ -115,14 +112,15 @@ class PromptOptimizer:
         Returns:
             The selected skill name
         """
-        # Try embedding selector first (fast, no API cost)
-        if self.embedding_selector.is_available():
-            selected_skill = self.embedding_selector.select_skill(prompt)
-            if selected_skill and selected_skill in self.skills.metadata:
-                return selected_skill
-
-        # Fallback to LLM selection if embedding selector fails
         selection_prompt = self.skills.get_skill_selection_prompt(prompt)
+        response = await self.llm.chat_flash(
+            [{"role": "user", "content": selection_prompt}],
+            stage="skill_selection"
+        )
+        selected_skill = response.strip().lower()
+        if selected_skill in self.skills.metadata:
+            return selected_skill
+
         response = await self.llm.chat(
             [{"role": "user", "content": selection_prompt}],
             stage="skill_selection"

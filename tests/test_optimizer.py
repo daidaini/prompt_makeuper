@@ -1,5 +1,6 @@
 import pytest
 from app.services.skill_manager import SkillManager
+from app.services.optimizer import PromptOptimizer
 from pathlib import Path
 
 
@@ -70,3 +71,53 @@ def test_skill_manager_uses_lazy_loading_cache():
 
     assert first is second
     assert "clarity" in manager._skill_cache
+
+
+@pytest.mark.asyncio
+async def test_optimizer_uses_flash_model_for_skill_selection():
+    class FakeLLMClient:
+        def __init__(self):
+            self.flash_calls = []
+            self.chat_calls = []
+
+        async def chat_flash(self, messages: list, stage: str = None, **kwargs) -> str:
+            self.flash_calls.append((messages, stage, kwargs))
+            return "structure"
+
+        async def chat(self, messages: list, stage: str = None, **kwargs) -> str:
+            self.chat_calls.append((messages, stage, kwargs))
+            return "clarity"
+
+    optimizer = PromptOptimizer(FakeLLMClient(), SkillManager(Path("app/skills")))
+
+    selected_skill = await optimizer._select_skill("write a well-structured proposal")
+
+    assert selected_skill == "structure"
+    assert len(optimizer.llm.flash_calls) == 1
+    assert optimizer.llm.flash_calls[0][1] == "skill_selection"
+    assert optimizer.llm.chat_calls == []
+
+
+@pytest.mark.asyncio
+async def test_optimizer_falls_back_to_main_model_when_flash_returns_unknown_skill():
+    class FakeLLMClient:
+        def __init__(self):
+            self.flash_calls = []
+            self.chat_calls = []
+
+        async def chat_flash(self, messages: list, stage: str = None, **kwargs) -> str:
+            self.flash_calls.append((messages, stage, kwargs))
+            return "unknown_skill"
+
+        async def chat(self, messages: list, stage: str = None, **kwargs) -> str:
+            self.chat_calls.append((messages, stage, kwargs))
+            return "clarity"
+
+    optimizer = PromptOptimizer(FakeLLMClient(), SkillManager(Path("app/skills")))
+
+    selected_skill = await optimizer._select_skill("make this clearer")
+
+    assert selected_skill == "clarity"
+    assert len(optimizer.llm.flash_calls) == 1
+    assert len(optimizer.llm.chat_calls) == 1
+    assert optimizer.llm.chat_calls[0][1] == "skill_selection"

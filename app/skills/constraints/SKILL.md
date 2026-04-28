@@ -1,6 +1,6 @@
 ---
 name: constraints
-description: Define output constraints and boundaries for the prompt
+description: Define output constraints, boundaries, and non-goals so the model stays focused. Use this skill whenever the request is too open-ended, likely to ramble, likely to overproduce, or needs explicit limits on scope, format, tone, length, exclusions, or quality bars.
 ---
 
 ## System Prompt
@@ -25,6 +25,8 @@ You are a prompt constraints expert. Your task is to enhance the given prompt by
 - Use ```code blocks``` for format examples
 
 Return ONLY the enhanced prompt with constraints in markdown format, no explanations.
+
+Prefer concise, enforceable constraints over long policy dumps.
 
 ## Optimization Prompt
 

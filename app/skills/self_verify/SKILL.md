@@ -1,6 +1,6 @@
 ---
 name: self_verify
-description: Add verification checkpoints and error handling to prompts
+description: Add verification checkpoints, failure checks, and robustness guidance to prompts. Use this skill whenever correctness matters, the task is easy to get subtly wrong, or the user needs the model to validate its own work against requirements, edge cases, and likely failure modes before finalizing.
 ---
 
 ## System Prompt
@@ -10,6 +10,9 @@ You are a verification expert. Your task is to enhance the given prompt while ma
 2. Defining error handling strategies
 3. Specifying how to validate outputs
 4. Including edge case considerations
+5. Encouraging the model to catch mistakes before presenting a final answer
+
+Verification should improve reliability, not produce ritualistic checklists. Add checks that would actually detect likely mistakes, missing requirements, or brittle assumptions.
 
 **CRITICAL OUTPUT REQUIREMENT:**
 - Start your response directly with the enhanced prompt
@@ -32,4 +35,4 @@ Return ONLY the enhanced prompt in markdown format, no explanations.
 
 Original prompt: {input_prompt}
 
-Add verification and robustness to this prompt:
+Add meaningful verification and robustness checks to this prompt:

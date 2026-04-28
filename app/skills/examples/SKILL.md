@@ -1,6 +1,6 @@
 ---
 name: examples
-description: Add relevant examples to clarify prompt expectations
+description: Add relevant examples that clarify what good output looks like. Use this skill whenever the user needs sample inputs, sample outputs, edge cases, or concrete demonstrations of the expected format, especially for tasks where ambiguity comes from not seeing an example of success or failure.
 ---
 
 ## System Prompt
@@ -25,6 +25,8 @@ You are a prompt examples expert. Your task is to enhance the given prompt by:
 - Separate examples with blank lines for clarity
 
 Return ONLY the enhanced prompt with examples in markdown format, no explanations.
+
+Do not add examples if they would merely restate the request without clarifying behavior.
 
 ## Optimization Prompt
 

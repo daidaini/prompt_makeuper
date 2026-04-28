@@ -114,6 +114,5 @@ When adding new features, add tests to the appropriate file. API tests use FastA
 ### Important Implementation Details
 
 - **Skill selection uses flash model**: The `PromptOptimizer._select_skill()` method asks the flash model to choose the best skill based on skill descriptions. If it returns an unknown skill, the main model is used as a fallback.
-- **Quality check threshold**: Iterative refinement stops when the LLM rates the prompt ≥ 8/10 on clarity/specificity. Adjust `_check_quality()` to change this threshold.
 - **Error handling**: LLM client failures raise exceptions to FastAPI, which returns 500 Internal Server Error. For production, consider adding retry logic or fallback skills.
 - **Async throughout**: All LLM calls and service methods are async. FastAPI runs them in the event loop without blocking.

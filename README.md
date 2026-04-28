@@ -96,7 +96,7 @@ Use `--list-skills` or `--help` to inspect available skills with one-line descri
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `POST` | `/makeup_prompt` | Optimize a prompt |
-| `GET` | `/skills` | List available skills |
+| `GET` | `/skills` | List available skills with descriptions |
 | `GET` | `/health` | Health check |
 
 Example:
@@ -106,6 +106,8 @@ curl -X POST http://localhost:8000/makeup_prompt \
   -H "Content-Type: application/json" \
   -d '{"input_prompt": "write code"}'
 ```
+
+`GET /skills` returns records in the form `{"name": "clarity", "description": "..."}`.
 
 ## Skills
 

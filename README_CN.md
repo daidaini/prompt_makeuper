@@ -96,7 +96,7 @@ CLI 默认只输出优化后的提示词。使用 `--json` 可打印完整结果
 | 方法 | 路径 | 说明 |
 |------|------|------|
 | `POST` | `/makeup_prompt` | 优化提示词 |
-| `GET` | `/skills` | 列出可用技能 |
+| `GET` | `/skills` | 列出可用技能及描述 |
 | `GET` | `/health` | 健康检查 |
 
 **调用示例：**
@@ -106,6 +106,8 @@ curl -X POST http://localhost:8000/makeup_prompt \
   -H "Content-Type: application/json" \
   -d '{"input_prompt": "写代码"}'
 ```
+
+`GET /skills` 返回形如 `{"name": "clarity", "description": "..."}` 的记录列表。
 
 ## 技能列表
 

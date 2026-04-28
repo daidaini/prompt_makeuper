@@ -1,6 +1,6 @@
 # prompt makeuper Chrome Extension
 
-A Chrome extension that provides a convenient interface for the prompt makeuper service. Optimize your prompts using AI-powered skill selection and iterative refinement.
+A Chrome extension that provides a convenient interface for the prompt makeuper service. Optimize your prompts using AI-powered skill selection and a single optimization pass.
 
 ## Prerequisites
 
@@ -506,7 +506,7 @@ async function checkServerHealth() {
 
 **Endpoint:** `POST http://localhost:8000/makeup_prompt`
 
-**Purpose:** Optimize a user's prompt using AI-powered skill selection and iterative refinement
+**Purpose:** Optimize a user's prompt using AI-powered skill selection and a single optimization pass
 
 **Request Headers:**
 ```http

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.models.schemas import MakeupRequest, MakeupResponse
+from app.models.schemas import MakeupRequest, MakeupResponse, SkillsResponse, SkillSummary
 from app.services.optimizer import PromptOptimizer
 from app.services.llm_client import LLMClient
 from app.services.skill_manager import SkillManager
@@ -27,10 +27,10 @@ optimizer = PromptOptimizer(llm_client, skill_manager)
 @app.post("/makeup_prompt", response_model=MakeupResponse)
 async def makeup_prompt(request: MakeupRequest) -> MakeupResponse:
     """
-    Optimize a prompt using LLM-powered skill selection and refinement.
+    Optimize a prompt using LLM-powered skill selection and prompt rewriting.
 
     This endpoint analyzes the input prompt, selects the most appropriate
-    optimization skill, and applies iterative refinement to produce an
+    optimization skill, and applies a single optimization pass to produce an
     improved version in the specified output format.
     """
     result = await optimizer.optimize(
@@ -50,7 +50,12 @@ async def health():
     return {"status": "healthy"}
 
 
-@app.get("/skills")
-async def list_skills():
+@app.get("/skills", response_model=SkillsResponse)
+async def list_skills() -> SkillsResponse:
     """List available optimization skills."""
-    return {"skills": skill_manager.list_skills()}
+    return SkillsResponse(
+        skills=[
+            SkillSummary(name=skill.name, description=skill.description)
+            for skill in skill_manager.metadata.values()
+        ]
+    )

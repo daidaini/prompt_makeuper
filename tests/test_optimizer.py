@@ -121,3 +121,18 @@ async def test_optimizer_falls_back_to_main_model_when_flash_returns_unknown_ski
     assert len(optimizer.llm.flash_calls) == 1
     assert len(optimizer.llm.chat_calls) == 1
     assert optimizer.llm.chat_calls[0][1] == "skill_selection"
+
+
+@pytest.mark.asyncio
+async def test_optimizer_raises_error_when_no_model_returns_known_skill():
+    class FakeLLMClient:
+        async def chat_flash(self, messages: list, stage: str = None, **kwargs) -> str:
+            return "unknown_skill"
+
+        async def chat(self, messages: list, stage: str = None, **kwargs) -> str:
+            return "still_unknown"
+
+    optimizer = PromptOptimizer(FakeLLMClient(), SkillManager(Path("app/skills")))
+
+    with pytest.raises(ValueError, match="Unknown skill: still_unknown"):
+        await optimizer.optimize("write something")

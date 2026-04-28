@@ -38,7 +38,7 @@ def test_skills_endpoint():
     data = response.json()
     assert "skills" in data
     assert isinstance(data["skills"], list)
-    expected_skills = [
+    expected_skills = {
         "clarity",
         "specificity",
         "structure",
@@ -47,8 +47,10 @@ def test_skills_endpoint():
         "mental_model",
         "progressive",
         "self_verify",
-    ]
-    assert all(skill in data["skills"] for skill in expected_skills)
+    }
+    assert all(isinstance(skill, dict) for skill in data["skills"])
+    assert all("name" in skill and "description" in skill for skill in data["skills"])
+    assert expected_skills.issubset({skill["name"] for skill in data["skills"]})
 
 
 def test_makeup_prompt_missing_input():

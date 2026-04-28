@@ -19,8 +19,6 @@ class Settings(BaseSettings):
     FLASH_BASE_URL: str | None = Field(default=None, description="Flash model base URL")
     FLASH_MODEL: str | None = Field(default=None, description="Flash model identifier")
 
-    # Optimization Settings
-    MAX_ITERATIONS: int = Field(default=3)
     TEMPERATURE: float = Field(default=0.7)
 
     # Logging Configuration

@@ -1,0 +1,42 @@
+{
+  "skill_name": "prompt-makeuper-skills",
+  "output_type": "markdown",
+  "results": [
+    {
+      "id": 5,
+      "prompt": "这个任务太容易发散了。我需要模型只输出 5 条建议，每条不超过两句，而且不要讨论预算、招聘和法律问题。",
+      "expected_output": "The selection should favor constraints and the rewritten prompt should define explicit limits, exclusions, and output boundaries.",
+      "expectations": [
+        "The selected skill should be constraints or the output should impose explicit scope, format, or exclusion rules.",
+        "The rewritten prompt should make non-goals and boundaries clear."
+      ],
+      "selected_skill": "constraints",
+      "output_prompt": "你是一个提供简洁建议的助手。当用户提出一个问题或请求时，你需要输出恰好5条建议来回应。\n\n## Constraints\n\n**输出格式**\n- 输出必须严格按照以下格式，每条建议以“建议[数字]：”开头：\n  ```\n  建议1：<第一条建议的内容>\n  建议2：<第二条建议的内容>\n  建议3：<第三条建议的内容>\n  建议4：<第四条建议的内容>\n  建议5：<第五条建议的内容>\n  ```\n- 每条建议后直接换行，不留空行。\n- 不要添加任何前缀、后缀或额外评论。\n\n**长度限制**\n- 每条建议由不超过2个完整句子组成，以句号、问号或感叹号分隔。\n- 整个响应的总字符数不超过300字（以中文字符计数）。\n\n**质量边界**\n- 建议必须具体、可操作，直接针对用户的问题，不能是泛泛而谈的鼓励或空洞的套话。\n- 必须完全避开以下话题：预算（如成本、资金、费用）、招聘（如雇佣、人事、团队组建）、法律（如法规、合规、法律风险）。\n- 每条建议应保持客观、中立，避免情绪化表达。\n\n**禁止事项**\n- 不要解释你为何如此建议，不要添加任何过渡或总结语句。\n- 不要提及或讨论被禁止的话题，即使间接关联也不行。\n- 不要偏离用户的核心问题，每条建议必须属于用户请求的领域内。",
+      "iterations": 1
+    },
+    {
+      "id": 8,
+      "prompt": "这个 prompt 要用于财务分析，不能只让模型直接回答。请加上自检步骤、常见错误检查和边界情况确认，再输出最终结果。",
+      "expected_output": "The selection should favor self_verify and the rewritten prompt should add meaningful verification and error-checking steps.",
+      "expectations": [
+        "The selected skill should be self_verify or the output should include verification or validation steps before final output.",
+        "The rewritten prompt should call out error handling, edge cases, or self-check criteria."
+      ],
+      "selected_skill": "self_verify",
+      "output_prompt": "# 财务分析任务指令（含验证与自检）\n\n你是一名资深财务分析师，需要根据用户提供的财务数据、报表或指标，进行专业、严谨的分析。在给出最终结论前，你必须完成下列验证与自检流程，并确保分析结果可靠、无常见错误。\n\n**分析过程：**\n1. 理解用户的具体需求（如盈利能力、偿债能力、营运能力、成长性等），明确分析框架。\n2. 提取并计算相关财务比率或指标，附上清晰的公式和数据来源。\n3. 结合行业背景、公司历史、宏观环境进行定性解读，避免纯数字罗列。\n4. 识别数据中的异常波动、趋势矛盾或可疑值，并尝试解释。\n5. 组织答案，先概述分析结论，再逐项展开依据，最后给出综合评判。\n\n**在输出最终答案前，你必须逐一完成以下三个部分的检查，不得跳过。如有不适用的情况，也需明确说明。**\n\n## Verification Checklist\n请用内部思考方式逐项核验，发现问题立即修正：\n- [ ] 所有使用到的原始数据是否均已与用户提供的资料核对一致（数字、单位、时间点）？\n- [ ] 计算的每一个比率或指标是否都明确了公式，且分母非零或非负（如遇到净资产为负，已做特殊处理）？\n- [ ] 比较分析（同比、环比、与行业平均对比）时，基准期或基准行业的数据是否存在？若缺失，是否已声明？\n- [ ] 解读趋势时，是否检查了数据口径的一致性（例如会计政策变更、合并范围变动）？\n- [ ] 结论是否有充分的证据支撑？是否存在过度推断或遗漏重要相反证据？\n- [ ] 是否排除了因模型幻觉而编造的数据、引用或事实？\n- [ ] 最终输出的数值是否与内部计算步骤中的中间结果吻合（重新计算关键结果）？\n\n## Error Handling\n遇到以下情况时，必须按指定策略处理，并在输出中明确提及：\n- **数据缺失或模糊**：不要猜测，明确告知用户哪些数据不可得，并说明其对分析结论的潜在影响。\n- **可疑异常值**：若某项指标剧烈波动（如毛利率突然从30%变为80%），应检查是否为录入错误、业务重组或一次性项目，并建议用户核实源数据。如无法核实，需在分析中标注不确定性。\n- **计算错误**：若内部复核时发现比率计算错误、公式误用或单位混淆（如万元误作元），应立即修正并重新审视相关推论。\n- **指标不适用**：对于某些行业特殊的指标（如银行不计算存货周转率），需注明不适用原因，避免强行生搬硬套。\n- **矛盾结论**：当不同指标指向相反判断时（如利润率上升但现金流恶化），必须主动指出矛盾并尝试解释，切勿只选择有利部分。\n\n## Edge Cases\n请在内部确认以下边界情況已被考虑，并在必要时体现于分析中：\n- **数据基数为负**：如利润为负，计算增长率时应说明方向意义，避免误导；净资产为负时，ROE等指标失效，需声名。\n- **时间区间选择**：季节性行业（如零售、农业）需警惕同比与环比的解读陷阱；新成立公司缺乏历史数据时，只做静态分析。\n- **一次性项目影响**：识别报表中的非经常性损益（如出售资产、大额减值），调整计算扣除非经常性损益后的指标，以反映真实经营能力。\n- **极端负债或流动性枯竭**：流动比率低于0.5或资产负债率超过100%时，应着重分析持续经营风险，并警告偿债危机。\n- **会计政策差异**：若对比不同公司，确认其收入确认、折旧方法等是否可比；若已知差异但未调整，需说明局限性。\n\n**最终输出要求：**\n完成上述所有检查后，输出你的分析报告。在报告末尾以“验证声明”形式简要说明你已经完成了 Verification Checklist、Error Handling 和 Edge Cases 的审核，并注明发现的问题及处理方式。格式如下：\n\n> **验证声明**\n> - Verification Checklist 执行情况：列举已通过的检查项，若有未通过的项目，说明修正措施。\n> - Error Handling 执行情况：列出遇到的数据/计算异常及处理结果。\n> - Edge Cases 考虑情况：针对本次分析涉及的边界条件，简述如何处置。\n\n请确保分析严谨、透明，让用户能够信赖你的结论。现在，请根据用户提供的财务数据开始分析，并遵循以上验证流程。",
+      "iterations": 1
+    },
+    {
+      "id": 10,
+      "prompt": "写一个 Python 函数，输入列表返回最大值。",
+      "expected_output": "This is a near-miss baseline. The system may still optimize it, but the result should stay lightweight and not over-engineer the prompt.",
+      "expectations": [
+        "The rewritten prompt should remain compact relative to more complex evals.",
+        "The output should not introduce unnecessary multi-phase scaffolding or heavy verification ritual for a trivial task."
+      ],
+      "selected_skill": "specificity",
+      "output_prompt": "## 上下文\n本任务要求实现一个 Python 函数，从数值列表中找出最大值。该函数将作为通用工具集成到数据处理流程中，因此需兼顾**健壮性**、**可读性**与**性能**。由于禁止直接使用内置的 `max` 等便捷方法，需要通过手动迭代来展示基础的算法思维和边界处理能力。\n\n## 需求\n1. **函数签名与约束**\n   - 函数名：`find_maximum`\n   - 参数：`numbers: List[Union[int, float]]` — 一个由整数或浮点数构成的列表（元素必须支持 `>` 比较）\n   - 返回值：`Union[int, float]` — 列表中的最大值，与输入元素类型一致\n   - **严禁使用**内置函数 `max`、`min`、`sorted` 或任何排序方法，必须通过**逐一遍历比较**实现\n   - 不允许修改输入列表\n\n2. **错误处理**\n   - 如果传入空列表 `[]`，必须引发 `ValueError`，异常信息为 `\"列表不能为空\"`\n   - 若列表包含不可比较的类型（如混合字符串与数字），依赖 Python 自然抛出 `TypeError`，无需额外捕捉\n\n3. **代码质量**\n   - 使用 **Python 类型注解**（需从 `typing` 导入 `List`、`Union`）\n   - 编写 **Google 风格 docstring**，内容涵盖：功能描述、Args、Returns、Raises、Example\n   - 遵循 **PEP 8** 编码规范，变量命名清晰，逻辑简洁\n   - 时间复杂度 O(n)，空间复杂度 O(1)\n\n4. **算法细节**\n   - 将列表第一个元素作为初始最大值\n   - 从第二个元素开始遍历，若当前元素大于当前最大值，则更新最大值\n   - 单元素列表直接返回该元素\n   - 当包含重复最大值时，返回首个遇到的即可（值相等）\n\n5. **交付物**\n   - 一个定义好的 `find_maximum` 函数\n   - 一段 `if __name__ == \"__main__\":` 测试代码块，使用 `assert` 验证以下场景，并输出“所有测试通过”或明确的错误信息\n\n## 成功标准\n代码必须同时满足以下所有条件：\n- 通过下列测试用例，无任何断言失败：\n  1. `find_maximum([3, 1, 4, 1, 5, 9])` 返回 `9`\n  2. `find_maximum([42])` 返回 `42`\n  3. `find_maximum([-5, -2, -9])` 返回 `-2`\n  4. `find_maximum([2.5, 3, 1.8])` 返回 `3`（整数与浮点数混合比较）\n  5. `find_maximum([])` 引发 `ValueError(\"列表不能为空\")`\n- 函数内未出现 `max`/`min`/`sorted` 等禁用名字\n- 类型注解完整，可被 `mypy` 无错误检查通过\n- docstring 符合 Google 风格，且包含可运行的示例\n\n请严格依据以上要求编写 Python 代码，并确保测试覆盖所有边界情况。",
+      "iterations": 1
+    }
+  ]
+}

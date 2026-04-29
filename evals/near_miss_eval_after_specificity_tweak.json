@@ -1,0 +1,18 @@
+{
+  "skill_name": "prompt-makeuper-skills",
+  "output_type": "markdown",
+  "results": [
+    {
+      "id": 10,
+      "prompt": "写一个 Python 函数，输入列表返回最大值。",
+      "expected_output": "This is a near-miss baseline. The system may still optimize it, but the result should stay lightweight and not over-engineer the prompt.",
+      "expectations": [
+        "The rewritten prompt should remain compact relative to more complex evals.",
+        "The output should not introduce unnecessary multi-phase scaffolding or heavy verification ritual for a trivial task."
+      ],
+      "selected_skill": "clarity",
+      "output_prompt": "## 编写要求\n\n编写一个 Python 函数，实现以下功能：\n\n- **输入**：一个非空列表，列表元素应为可比较的数值类型（例如整数或浮点数）\n- **输出**：该列表中的最大值\n- **行为**：函数应返回最大元素，且不修改原始列表\n\n### 示例\n- 输入 `[3, 1, 7, 2]` → 输出 `7`\n- 输入 `[-5, 10, 0]` → 输出 `10`",
+      "iterations": 1
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "skill_name": "prompt-makeuper-skills",
+  "output_type": "markdown",
+  "results": [
+    {
+      "id": 1,
+      "prompt": "我已经写了一个提示词，但读起来特别绕，句子很长还有重复要求。别帮我加新需求，只把它改得更清楚、更容易执行。",
+      "expected_output": "The selection should favor clarity and the rewritten prompt should simplify ambiguous or confusing wording without inventing new requirements.",
+      "expectations": [
+        "The selected skill should be clarity or the output should clearly prioritize wording cleanup over adding new content.",
+        "The rewritten prompt should preserve original intent while reducing ambiguity or repetition."
+      ],
+      "selected_skill": "clarity",
+      "output_prompt": "## 任务\n请帮我优化一个已有的提示词，使其更清晰、更容易理解和执行。\n\n## 当前问题\n原提示词存在以下问题：\n- 表述绕口，句子过长\n- 有重复要求或冗余内容\n\n## 优化要求\n- **仅优化表达**：不得添加新的指令、需求或功能。\n- **保持原意**：不改变原提示词的目标和核心信息。\n- **提升可读性**：用简洁、直接的句子替换冗长绕口的表达，合并重复内容。\n\n## 输出\n直接给出优化后的清晰版提示词即可，无需任何解释。",
+      "iterations": 1
+    }
+  ]
+}

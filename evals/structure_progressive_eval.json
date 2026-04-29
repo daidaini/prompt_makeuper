@@ -1,0 +1,42 @@
+{
+  "skill_name": "prompt-makeuper-skills",
+  "output_type": "markdown",
+  "results": [
+    {
+      "id": 3,
+      "prompt": "下面这段 prompt 内容其实都对，但像一堵墙，顺序很乱。帮我整理成更容易扫描的结构化版本。",
+      "expected_output": "The selection should favor structure and the rewritten prompt should reorganize existing content into clearly labeled sections.",
+      "expectations": [
+        "The selected skill should be structure or the output should primarily improve organization rather than add substantial new content.",
+        "The rewritten prompt should use clear sections such as context, task, requirements, or output format."
+      ],
+      "selected_skill": "structure",
+      "output_prompt": "## 背景\n- 原始 Prompt 内容在实质上是正确的\n- 当前排版像“一堵墙”，信息顺序混乱，难以快速扫描\n\n## 任务\n- 对下方面提供的 Prompt 内容进行重组，使其更容易扫描与执行\n\n## 具体要求\n- 添加清晰的章节标题，建立视觉层次\n- 使用列表、分段等结构化方式呈现信息\n- 保持原始意图和所有有效信息不变\n\n## 待整理 Prompt\n[请在此处粘贴需要整理的原始 Prompt 内容]",
+      "iterations": 1
+    },
+    {
+      "id": 7,
+      "prompt": "我要让模型帮我做一个从需求梳理到原型、再到实现和验证的完整流程。请把提示词拆成分阶段执行，不要一口气做完。",
+      "expected_output": "The selection should favor progressive and the rewritten prompt should decompose the work into ordered phases with handoffs or gates.",
+      "expectations": [
+        "The selected skill should be progressive or the output should clearly stage the work into multiple phases.",
+        "The rewritten prompt should show dependencies or completion gates between phases."
+      ],
+      "selected_skill": "progressive",
+      "output_prompt": "## 阶段 1：需求梳理与确认\n\n本阶段是后续所有工作的基础，必须产出清晰、无歧义的需求文档。\n\n**依赖关系**  \n无前置阶段。本阶段独立启动，但需用户确认后方可进入下一阶段。\n\n**任务清单**\n- 通过对话或预设模板收集需求，至少明确：项目目标、核心功能、用户角色、性能约束、技术栈偏好。\n- 对模糊需求进行追问，或假设合理限制并标注待确认项。\n- 将需求整理为结构化文档，区分“必须实现”、“可选”、“暂不处理”三类。\n- 提炼用户故事或业务场景，按优先级排列。\n\n**完成标准**\n- 需求文档包含至少 3 个优先级明确的用户故事/功能点。\n- 所有模糊点均已获得用户确认或标注为“本文档假设”。\n- 用户明确回复“需求确认”，本阶段结束。\n\n**产出物**\n《需求文档》草稿（文本格式，分段描述）。\n\n---\n\n## 阶段 2：低保真原型与流程设计\n\n基于确认的需求，构建交互流程和初步界面布局，验证需求理解是否正确。\n\n**依赖关系**  \n必须在阶段1的需求文档获得用户确认后启动。\n\n**任务清单**\n- 绘制主要页面/状态的低保真线框图（可用文字描述或ASCII图表示）。\n- 定义页面间的导航流程与决策分支。\n- 针对关键用户故事绘制对应的交互路径。\n- 识别并记录可能的状态变化、异常流程、边界情况。\n\n**完成标准**\n- 至少覆盖需求文档中前2个优先级的用户故事。\n- 每个核心页面均配有文字或图解说明。\n- 用户手动批复原型无重大逻辑偏差，可进入下一阶段。\n\n**产出物**\n《原型说明》（含流程图描述、页面线框、交互路径注释）。\n\n---\n\n## 阶段 3：架构设计与实现计划\n\n将原型转化为可落地的技术实现计划，拆分模块与接口。\n\n**依赖关系**  \n依赖阶段2的原型确认（用户认可交互流程），同时参考阶段1的需求文档。\n\n**任务清单**\n- 定义系统架构：前端/后端/数据层/外部服务等的职责边界。\n- 确定技术栈与关键库（若需求未指定，给出推荐方案并说明理由）。\n- 拆分模块（组件、函数、API端点等），标注接口契约（输入/输出）。\n- 编排实现步骤（建议顺序），并预估每个步骤的复杂度与风险点。\n\n**完成标准**\n- 架构图或文字描述能够支撑原型所有交互。\n- 模块拆分粒度到函数/接口级别，且有明确的输入输出定义。\n- 用户确认实现计划无缺失或方向错误。\n\n**产出物**\n《实现计划》（架构说明、模块清单、接口表格、实现步骤顺序）。\n\n---\n\n## 阶段 4：核心功能实现与单元验证\n\n按计划实现最小可行产品（MVP），确保每个单元可独立验证。\n\n**依赖关系**  \n必须在阶段3的实现计划获得确认后开始，并按计划顺序执行。\n\n**任务清单**\n- 逐个实现模块/组件，每完成一个单元附上简要测试思路或测试用例。\n- 对关键接口提供调用示例与预期输出。\n- 记录实现过程中发现的需求冲突或设计调整，并及时与用户同步。\n- 实现完成后进行端到端流程梳理，确保各模块集成。\n\n**完成标准**\n- 所有在实现计划中标为“核心”的模块均已实现并附验证案例。\n- 无已知的阻塞性错误（严重bug）。\n- 用户可手动运行演示或审查代码/API示例。\n\n**产出物**\n《实现代码/IP单元验证》、更新后的《问题记录》（如有）。\n\n---\n\n## 阶段 5：集成测试与最终验证\n\n将实现的系统进行全场景测试，确认满足原始需求。\n\n**依赖关系**  \n需要阶段4的实现结果和阶段1的需求文档（作为验收标准）。\n\n**任务清单**\n- 基于用户故事编写集成测试场景（包括正常、异常、边界）。\n- 执行测试并记录实际输出与预期对比。\n- 对存在的问题进行分类（致命、严重、建议），并给出修复建议或执行修复。\n- 输出项目小结：哪些需求已满足，哪些未覆盖及原因，后续迭代建议。\n\n**完成标准**\n- 所有优先级1的用户故事测试通过。\n- 遗留问题均已记录且致命/严重项修复或明确处理方案。\n- 用户签署“验收通过”或提出补充修正。\n\n**产出物**\n《测试报告》、《项目小结与迭代建议》。\n\n---\n\n**使用说明**  \n将以上提示词逐步提供给模型，每阶段完成后等待用户确认再进入下一阶段。可根据实际复杂度增删阶段或调整门槛。",
+      "iterations": 1
+    },
+    {
+      "id": 9,
+      "prompt": "把这个 prompt 改好，既要更具体，也要有清晰结构，还最好能附一个输出示例。",
+      "expected_output": "This is a deliberate overlap case. The selection should choose one dominant skill, but the output should make that dominant intervention obvious rather than weakly mixing everything.",
+      "expectations": [
+        "The output should show one clearly dominant optimization strategy rather than a muddy blend of all skills.",
+        "The chosen structure of the rewrite should still improve prompt usability."
+      ],
+      "selected_skill": "specificity",
+      "output_prompt": "## Context\n你是一名提示词优化专家。用户会提交一个需要改进的原始提示词。原始提示词可能表达模糊、缺乏结构或不包含输出示例。你的任务是将该提示词转化为一个**更具体、结构清晰并且附有输出示例**的新提示词，同时**完全保持原始意图**，不添加任何未提及的事实信息。\n\n## Requirements\n- 仔细分析用户提供的原始提示词，定位所有模糊、缺失或不清晰的部分。\n- **禁止编造信息**：对于原始提示中未明确给出的重要细节，必须转化为：\n  - 明确的占位符（例如 `[请在此补充背景信息]`）\n  - 可选项（例如 `A 或 B 任选其一`）\n  - 需要下游模型进一步澄清的问题（例如 `询问用户：……`）\n- 优化后的提示词必须包含以下结构化模块：\n  1. **背景和上下文**（## Context）：说明任务的背景、目标受众或前置信息\n  2. **具体要求和约束**（## Requirements）：以编号列表或项目符号列出所有必须遵守的规则、禁令或格式要求\n  3. **成功标准**（## Success Criteria）：明确描述什么算完成任务，应符合哪些质量标准\n  4. **输出示例**（## Example Output）：提供一个完整的示例，展示优化后提示词实际执行后的期望结果\n- 使用**有效的 Markdown** 语法输出，标题层级为 `##` 和 `###`，重点信息使用 `**粗体**` 强调，列表统一使用 `-` 或 `1.`。\n\n## Success Criteria\n- 优化后的提示词**消除了原始版本中的模糊性**，补充了必要的任务上下文。\n- 输出结构层次分明，读者可以快速定位到各项要求、标准和示例。\n- 提供的输出示例**与任务高度匹配**，并能清晰地展示优化效果（例如：输入和输出的对照）。\n- 最终输出中**不包含任何原始提示词中未出现的新增事实或凭空假设**。\n\n## 步骤\n1. 接收用户提交的原始提示词。\n2. 提取核心意图，标出所有模糊或不完整的部分。\n3. 拟定需要补充的上下文、约束和成功条件，确保它们源于原始要求，而非外部知识。\n4. 基于原始意图编写一个具象化的输出示例，使其可验证、可复现。\n5. 将所有内容组装为上述 Markdown 结构，并确保在末尾单独放置 `## Example Output` 部分。\n\n请直接提供需要优化的原始提示词，我将按上述要求输出优化结果。",
+      "iterations": 1
+    }
+  ]
+}

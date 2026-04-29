@@ -17,14 +17,31 @@ def load_evals(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-async def run_eval(output_path: Path, output_type: str) -> None:
+def parse_ids(raw_ids: str | None) -> list[int] | None:
+    if raw_ids is None:
+        return None
+    return [int(part.strip()) for part in raw_ids.split(",") if part.strip()]
+
+
+def select_evals(evals: list[dict], ids: list[int] | None, limit: int | None) -> list[dict]:
+    selected = evals
+    if ids:
+        by_id = {item["id"]: item for item in evals}
+        selected = [by_id[item_id] for item_id in ids if item_id in by_id]
+    if limit is not None:
+        selected = selected[:limit]
+    return selected
+
+
+async def run_eval(output_path: Path, output_type: str, ids: list[int] | None = None, limit: int | None = None) -> None:
     evals_path = PROJECT_ROOT / "evals" / "skills_evals.json"
     payload = load_evals(evals_path)
+    selected_evals = select_evals(payload["evals"], ids=ids, limit=limit)
 
     optimizer = PromptOptimizer(LLMClient(), SkillManager(PROJECT_ROOT / "app" / "skills"))
 
     results = []
-    for item in payload["evals"]:
+    for item in selected_evals:
         result = await optimizer.optimize(item["prompt"], output_type=output_type)
         results.append(
             {
@@ -60,10 +77,26 @@ def main() -> int:
         default="markdown",
         help="Optimizer output format to evaluate",
     )
+    parser.add_argument(
+        "--ids",
+        help="Comma-separated eval IDs to run, preserving the provided order",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        help="Run only the first N evals after filtering",
+    )
     args = parser.parse_args()
 
     output_path = PROJECT_ROOT / args.output
-    asyncio.run(run_eval(output_path, args.output_type))
+    asyncio.run(
+        run_eval(
+            output_path,
+            args.output_type,
+            ids=parse_ids(args.ids),
+            limit=args.limit,
+        )
+    )
     return 0
 
 

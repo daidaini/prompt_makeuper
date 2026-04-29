@@ -1,0 +1,42 @@
+{
+  "skill_name": "prompt-makeuper-skills",
+  "output_type": "markdown",
+  "results": [
+    {
+      "id": 1,
+      "prompt": "我已经写了一个提示词，但读起来特别绕，句子很长还有重复要求。别帮我加新需求，只把它改得更清楚、更容易执行。",
+      "expected_output": "The selection should favor clarity and the rewritten prompt should simplify ambiguous or confusing wording without inventing new requirements.",
+      "expectations": [
+        "The selected skill should be clarity or the output should clearly prioritize wording cleanup over adding new content.",
+        "The rewritten prompt should preserve original intent while reducing ambiguity or repetition."
+      ],
+      "selected_skill": "clarity",
+      "output_prompt": "请将我编写的提示词重新组织为更清晰、更易执行的版本。当前版本句子冗长且要求重复。\n\n**要求：**\n- 仅优化语言表达，调整句子结构和逻辑，去除重复。\n- 不得添加新的功能、示例或验证步骤。\n- 保持原有意图和范围完全不变。\n- 直接输出优化后的提示词，不要任何解释或额外说明。",
+      "iterations": 1
+    },
+    {
+      "id": 2,
+      "prompt": "帮我把这个请求补完整一点：做一个内部运营看板。现在的问题是太空了，没有受众、指标、技术范围和验收标准。",
+      "expected_output": "The selection should favor specificity and the rewritten prompt should add concrete context, requirements, and success criteria.",
+      "expectations": [
+        "The selected skill should be specificity or the output should add explicit context, constraints, and success criteria.",
+        "The rewritten prompt should turn vague goals into actionable requirements without pretending unknown facts are certain."
+      ],
+      "selected_skill": "specificity",
+      "output_prompt": "做一个内部运营看板\n\n## Context\n我们是一个快速增长的业务团队，需要实时掌握核心运营指标，以便快速发现异常并做出数据驱动决策。当前缺乏统一的可视化看板，数据分散在多个系统中，团队无法高效对齐目标达成情况。\n\n## Requirements\n请基于以下要求补充和完善该“内部运营看板”的需求说明，确保输出可直接用于开发或搭建。\n\n### 受众与使用场景\n- **主要受众**：[请指定，例如：运营经理、区域负责人、高管团队，或全体运营成员]\n- **使用场景**：[请描述典型场景，例如：每日晨会快速过指标、周报数据截取、实时异常预警推送]\n- **权限需求**：[是否需要按角色区分可见数据？如区域经理只看本区数据]\n\n### 核心运营指标\n- **关键指标清单**：列出至少5个需要展示的核心指标（如：日活跃用户数、订单转化率、工单处理时长、库存周转率、客服响应时长等）。\n- **指标维度**：每个指标需要何种维度拆分（如：按时间、按区域、按产品线、按渠道）？\n- **对比基准**：是否需要显示目标值、环比、同比或行业基准？\n\n### 技术范围与数据源\n- **数据源**：请明确看板对接的数据系统（如：MySQL数据库、第三方API、Excel文件、数据仓库等）。\n- **更新频率**：要求实时（准实时）刷新还是按固定周期（如每小时、每日）更新？\n- **前端技术偏好**：是否有特定工具或平台限制（如：Power BI、Tableau、自建Web应用、内部系统嵌入）？\n- **移动端适配**：是否需要支持手机或平板查看？\n\n### 功能与交互要求\n- **筛选与钻取**：是否需要时间范围选择器、维度筛选器、下钻到明细的能力？\n- **告警机制**：是否需要在指标出现异常时（如低于阈值）进行邮件、消息推送或看板高亮警示？\n- **导出功能**：是否需要支持图片/PDF/Excel导出？\n\n### 验收标准\n- **数据准确性**：看板数据与源系统误差不超过 [请填写]%，关键指标实现100%对齐。\n- **加载性能**：首页渲染时间在 [请填写] 秒以内。\n- **易用性**：核心用户无需培训即可理解指标含义，能顺利完成日常查看和简单筛选。\n- **稳定性**：在 [请填写] 并发用户下无崩溃，数据刷新不中断。\n\n### 交付物\n- 一份完整的看板原型或截图（若已有设计工具可提交）\n- 数据源接口文档或连接信息\n- 用户操作说明（如需要）\n\n### 其他约束\n- 项目需在 [请填写] 日期前交付\n- 遵守公司数据安全与隐私规范，敏感数据需脱敏处理\n\n请根据以上框架，将“做一个内部运营看板”细化为一份可直接执行的需求文档，补全所有占位符或明确作答。",
+      "iterations": 1
+    },
+    {
+      "id": 9,
+      "prompt": "把这个 prompt 改好，既要更具体，也要有清晰结构，还最好能附一个输出示例。",
+      "expected_output": "This is a deliberate overlap case. The selection should choose one dominant skill, but the output should make that dominant intervention obvious rather than weakly mixing everything.",
+      "expectations": [
+        "The output should show one clearly dominant optimization strategy rather than a muddy blend of all skills.",
+        "The chosen structure of the rewrite should still improve prompt usability."
+      ],
+      "selected_skill": "specificity",
+      "output_prompt": "## 背景\n你是一名**提示优化专家**。原始提示为：\n```\n{original_prompt}\n```\n请对上述原始提示进行增强，使其：\n- **更具体**：补充必要的上下文、约束和成功标准\n- **结构清晰**：采用标准化分段格式（如## 背景、## 要求等）\n- **附带输出示例**：提供在优化后提示下预期产生的典型结果\n\n如果原始提示存在模糊或缺失的信息，**不得凭空编造**，而应将其转化为明确的**占位符**、**选项列表**或**待澄清问题**，并保留在优化后的提示中。\n\n## 要求\n1. **保持原意**：不得改变原始提示的核心任务目标\n2. **补充缺失细节**：\n   - 添加相关背景信息（## 背景）\n   - 列出明确约束与要求（## 要求），使用**粗体**强调关键条件\n   - 定义可衡量的成功标准（## 成功标准）\n3. **结构化输出**：\n   - 使用 Markdown 标题分层（## 主章节，### 子章节）\n   - 要求项使用编号列表；非顺序条件使用项目符号\n4. **输出示例**：\n   - 在优化后提示的末尾包含一个## 输出示例章节，给出符合所有要求的完整示例\n   - 示例需与原始提示的意图保持一致，且具体、可直接参考\n5. **处理未知信息**：\n   - 若原始提示遗漏关键参数（如目标受众、字数、格式等），请用`{占位符}`表示，或列出“请确认以下事项之一：”的选项，或在提示中加入“【待用户提供：……】”\n   - 若原始任务本身模糊不清，先以问题形式提出澄清请求，再给出不同假设下的优化版本\n\n## 成功标准\n经过优化后，新提示应满足：\n- 任何具备基本能力的执行者（人或模型）在阅读后，无需额外猜测即可开始执行\n- 所有必要输入项均已显式化为占位符或问题，不存在隐性前提\n- 示例输出展示了优化后提示的实际效果，并与成功标准一致\n- 全文使用简体中文，Markdown 格式正确，便于直接复制使用\n\n## 输出示例\n（以下为针对一个假设原始提示“写一首关于春天的诗”的优化结果，供格式参考）\n\n---\n\n## 背景\n你是一名**现代诗歌创作者**。需要根据以下设定创作一首关于**春天**的短诗。\n\n## 要求\n1. **风格**：采用自由诗体，避免古典格律\n2. **主题焦点**：必须包含至少两种**春天的典型意象**（如新芽、融雪、南风、杏花等）\n3. **格式限制**：\n   - 总行数：**8–12 行**\n   - 每行字数：不超过 15 个汉字\n4. **语气**：轻柔、带有希望感，但避免直接使用“希望”“温暖”等抽象词，要通过意象传递\n\n## 成功标准\n- 读者能通过具体意象感受到春天的到来\n- 无押韵硬凑，语言自然流畅\n- 行数与字数符合要求\n\n## 输出示例\n```\n新芽顶破褐色土层，\n风从南面吹开薄雾。\n溪水扭动冰的关节，\n杏花在枝头轻轻拆信。\n……（后续行数符合要求）\n```",
+      "iterations": 1
+    }
+  ]
+}

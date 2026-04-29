@@ -31,9 +31,9 @@ def fake_optimizer(monkeypatch):
 @pytest.fixture
 def fake_skill_list(monkeypatch):
     skills = [
-        ("clarity", "Make prompts easier to understand."),
-        ("specificity", "Add missing details and constraints."),
-        ("structure", "Organize prompts into clearer sections."),
+        ("clarity", "Improve prompt clarity by removing ambiguity."),
+        ("specificity", "Add specificity and details to prompts."),
+        ("structure", "Organize prompt structure with clear sections."),
     ]
     monkeypatch.setattr(cli, "list_skills", lambda: skills)
     return skills
@@ -139,9 +139,9 @@ def test_cli_lists_skills_without_prompt(capsys, fake_optimizer, fake_skill_list
     captured = capsys.readouterr()
     assert exit_code == 0
     assert captured.out.strip().splitlines() == [
-        "clarity: Make prompts easier to understand.",
-        "specificity: Add missing details and constraints.",
-        "structure: Organize prompts into clearer sections.",
+        "clarity: 消除歧义，让提示词更清楚。",
+        "specificity: 补充缺失细节，让任务更可执行。",
+        "structure: 重组内容结构，让信息更易扫描。",
     ]
     assert fake_optimizer.calls == []
 
@@ -153,8 +153,17 @@ def test_cli_help_includes_skill_summaries(capsys, fake_skill_list):
     captured = capsys.readouterr()
     assert exc_info.value.code == 0
     assert "Available skills:" in captured.out
-    assert "clarity: Make prompts easier to understand." in captured.out
-    assert "structure: Organize prompts into clearer sections." in captured.out
+    assert "clarity: 消除歧义，让提示词更清楚。" in captured.out
+    assert "structure: 重组内容结构，让信息更易扫描。" in captured.out
+
+
+def test_cli_uses_builtin_chinese_summaries_not_skill_descriptions(capsys, fake_optimizer, fake_skill_list):
+    exit_code = cli.main(["--list-skills"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "Improve prompt clarity by removing ambiguity." not in captured.out
+    assert "Add specificity and details to prompts." not in captured.out
 
 
 def test_prompt_makeuper_wrapper_script_exists():

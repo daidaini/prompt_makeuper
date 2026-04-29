@@ -9,6 +9,18 @@ from app.services.optimizer import PromptOptimizer
 from app.services.skill_manager import SkillManager
 
 
+SKILL_SUMMARIES_ZH = {
+    "clarity": "消除歧义，让提示词更清楚。",
+    "specificity": "补充缺失细节，让任务更可执行。",
+    "structure": "重组内容结构，让信息更易扫描。",
+    "examples": "加入示例，明确期望输出长什么样。",
+    "constraints": "补上限制条件，防止回答发散跑偏。",
+    "mental_model": "补足隐含目标和假设，对齐真实意图。",
+    "progressive": "把复杂任务拆成阶段，按顺序推进。",
+    "self_verify": "加入自检和校验步骤，提高结果可靠性。",
+}
+
+
 def build_optimizer() -> PromptOptimizer:
     return PromptOptimizer(LLMClient(), SkillManager(Path("app/skills")))
 
@@ -22,7 +34,7 @@ def list_skills() -> list[tuple[str, str]]:
 
 
 def format_skill_list(skills: list[tuple[str, str]]) -> list[str]:
-    return [f"{name}: {description}" for name, description in skills]
+    return [f"{name}: {SKILL_SUMMARIES_ZH.get(name, '技能说明待补充。')}" for name, _ in skills]
 
 
 def build_help_description() -> str:

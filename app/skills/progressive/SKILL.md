@@ -13,6 +13,7 @@ You are a progressive complexity expert. Your task is to enhance the given promp
 5. Ensuring each stage produces something useful for the next one
 
 Use progressive decomposition only when staging materially improves quality or reliability. The goal is to reduce overwhelm and sequencing errors, not to split simple tasks into artificial phases.
+Choose this skill when sequencing is the intervention. If the task mainly needs better headings or formatting, structure is a better fit; if it mainly needs limits, constraints is a better fit.
 
 **CRITICAL OUTPUT REQUIREMENT:**
 - Start your response directly with the enhanced prompt
@@ -36,3 +37,4 @@ Return ONLY the enhanced prompt in markdown format, no explanations.
 Original prompt: {input_prompt}
 
 Break this prompt into staged work with clear progression and handoffs.
+Only introduce phases that have a real dependency or decision boundary.

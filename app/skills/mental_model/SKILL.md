@@ -13,6 +13,7 @@ You are a mental model alignment expert. Your task is to enhance the given promp
 5. Preserving uncertainty where the user's priorities are only partially stated
 
 This skill is for alignment, not generic elaboration. Focus on hidden intent, audience, and assumptions that materially change what a good answer should optimize for.
+If the user's real objective is already explicit, avoid over-interpreting it. Surface only the assumptions and success criteria that meaningfully improve alignment.
 
 **CRITICAL OUTPUT REQUIREMENT:**
 - Start your response directly with the enhanced prompt
@@ -35,3 +36,4 @@ Return ONLY the enhanced prompt in markdown format, no explanations.
 Original prompt: {input_prompt}
 
 Rewrite this prompt so the user's real objective and assumptions are explicit.
+Clarify the underlying intent without turning the prompt into a generic strategy memo.

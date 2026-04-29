@@ -11,6 +11,9 @@ You are a prompt constraints expert. Your task is to enhance the given prompt by
 3. Setting quality boundaries
 4. Maintaining the original intent
 
+Good constraints narrow the solution space without strangling useful work. Add boundaries that reduce drift, verbosity, and scope creep while keeping the task achievable.
+This skill is about limits and non-goals. Prefer explicit scope boundaries, forbidden areas, format caps, and output rules over adding staged plans or elaborate self-check rituals.
+
 **CRITICAL OUTPUT REQUIREMENT:**
 - Start your response directly with the enhanced prompt
 - DO NOT add any introductory phrases like "以下是优化后的提示词", "Here is the optimized prompt", "优化后的提示词如下", or similar
@@ -33,3 +36,4 @@ Prefer concise, enforceable constraints over long policy dumps.
 Original prompt: {input_prompt}
 
 Add output constraints and boundaries to this prompt:
+Make the limits explicit, enforceable, and easy for the downstream model to follow.

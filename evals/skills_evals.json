@@ -1,0 +1,105 @@
+{
+  "skill_name": "prompt-makeuper-skills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我已经写了一个提示词，但读起来特别绕，句子很长还有重复要求。别帮我加新需求，只把它改得更清楚、更容易执行。",
+      "expected_output": "The selection should favor clarity and the rewritten prompt should simplify ambiguous or confusing wording without inventing new requirements.",
+      "files": [],
+      "expectations": [
+        "The selected skill should be clarity or the output should clearly prioritize wording cleanup over adding new content.",
+        "The rewritten prompt should preserve original intent while reducing ambiguity or repetition."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "帮我把这个请求补完整一点：做一个内部运营看板。现在的问题是太空了，没有受众、指标、技术范围和验收标准。",
+      "expected_output": "The selection should favor specificity and the rewritten prompt should add concrete context, requirements, and success criteria.",
+      "files": [],
+      "expectations": [
+        "The selected skill should be specificity or the output should add explicit context, constraints, and success criteria.",
+        "The rewritten prompt should turn vague goals into actionable requirements without pretending unknown facts are certain."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "下面这段 prompt 内容其实都对，但像一堵墙，顺序很乱。帮我整理成更容易扫描的结构化版本。",
+      "expected_output": "The selection should favor structure and the rewritten prompt should reorganize existing content into clearly labeled sections.",
+      "files": [],
+      "expectations": [
+        "The selected skill should be structure or the output should primarily improve organization rather than add substantial new content.",
+        "The rewritten prompt should use clear sections such as context, task, requirements, or output format."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "我想让模型稳定输出客服回复模板，但大家总理解不一样。请直接在提示词里给出几个好例子和一个反例，让它知道什么叫合格。",
+      "expected_output": "The selection should favor examples and the rewritten prompt should include representative examples that clarify expected output.",
+      "files": [],
+      "expectations": [
+        "The selected skill should be examples or the output should include explicit examples or sample outputs.",
+        "The rewritten prompt should use examples to clarify the target behavior rather than merely restating the request."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "这个任务太容易发散了。我需要模型只输出 5 条建议，每条不超过两句，而且不要讨论预算、招聘和法律问题。",
+      "expected_output": "The selection should favor constraints and the rewritten prompt should define explicit limits, exclusions, and output boundaries.",
+      "files": [],
+      "expectations": [
+        "The selected skill should be constraints or the output should impose explicit scope, format, or exclusion rules.",
+        "The rewritten prompt should make non-goals and boundaries clear."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "帮我把这个请求改好，不只是写出要做什么，还要把真正目标、默认假设和成功标准说清楚。现在它只写了表面动作。",
+      "expected_output": "The selection should favor mental_model and the rewritten prompt should make intent, assumptions, and success criteria explicit.",
+      "files": [],
+      "expectations": [
+        "The selected skill should be mental_model or the output should surface hidden goals and assumptions.",
+        "The rewritten prompt should clarify why the task matters, not just list actions."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "我要让模型帮我做一个从需求梳理到原型、再到实现和验证的完整流程。请把提示词拆成分阶段执行，不要一口气做完。",
+      "expected_output": "The selection should favor progressive and the rewritten prompt should decompose the work into ordered phases with handoffs or gates.",
+      "files": [],
+      "expectations": [
+        "The selected skill should be progressive or the output should clearly stage the work into multiple phases.",
+        "The rewritten prompt should show dependencies or completion gates between phases."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "这个 prompt 要用于财务分析，不能只让模型直接回答。请加上自检步骤、常见错误检查和边界情况确认，再输出最终结果。",
+      "expected_output": "The selection should favor self_verify and the rewritten prompt should add meaningful verification and error-checking steps.",
+      "files": [],
+      "expectations": [
+        "The selected skill should be self_verify or the output should include verification or validation steps before final output.",
+        "The rewritten prompt should call out error handling, edge cases, or self-check criteria."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "把这个 prompt 改好，既要更具体，也要有清晰结构，还最好能附一个输出示例。",
+      "expected_output": "This is a deliberate overlap case. The selection should choose one dominant skill, but the output should make that dominant intervention obvious rather than weakly mixing everything.",
+      "files": [],
+      "expectations": [
+        "The output should show one clearly dominant optimization strategy rather than a muddy blend of all skills.",
+        "The chosen structure of the rewrite should still improve prompt usability."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "写一个 Python 函数，输入列表返回最大值。",
+      "expected_output": "This is a near-miss baseline. The system may still optimize it, but the result should stay lightweight and not over-engineer the prompt.",
+      "files": [],
+      "expectations": [
+        "The rewritten prompt should remain compact relative to more complex evals.",
+        "The output should not introduce unnecessary multi-phase scaffolding or heavy verification ritual for a trivial task."
+      ]
+    }
+  ]
+}

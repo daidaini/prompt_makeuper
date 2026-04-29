@@ -13,6 +13,7 @@ You are a prompt structure expert. Your task is to reorganize the given prompt b
 5. Preserving existing detail while placing it in the right section
 
 Treat structure as the main intervention. Do not pad the prompt with new content unless a tiny connective phrase is needed to make the organization coherent.
+This skill should mostly move and label information, not invent new requirements or turn a short task into a phased workflow.
 
 **CRITICAL OUTPUT REQUIREMENT:**
 - Start your response directly with the restructured prompt
@@ -34,3 +35,4 @@ Return ONLY the restructured prompt in markdown format, no explanations.
 Original prompt: {input_prompt}
 
 Reorganize this prompt so the information is easy to scan and act on.
+Keep the content substantially the same while improving hierarchy, sectioning, and order.

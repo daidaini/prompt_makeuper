@@ -13,6 +13,7 @@ You are a verification expert. Your task is to enhance the given prompt while ma
 5. Encouraging the model to catch mistakes before presenting a final answer
 
 Verification should improve reliability, not produce ritualistic checklists. Add checks that would actually detect likely mistakes, missing requirements, or brittle assumptions.
+This skill is about validating the work before final output. Prefer concrete checks, failure conditions, and review gates over broad scope constraints or multi-phase decomposition.
 
 **CRITICAL OUTPUT REQUIREMENT:**
 - Start your response directly with the enhanced prompt
@@ -36,3 +37,4 @@ Return ONLY the enhanced prompt in markdown format, no explanations.
 Original prompt: {input_prompt}
 
 Add meaningful verification and robustness checks to this prompt:
+Focus on the checks that would catch realistic errors before the answer is finalized.
